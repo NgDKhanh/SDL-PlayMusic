@@ -45,6 +45,26 @@ void pauseMusic()
   }
 }
 
+int volume = 64;
+
+void volumeUp()
+{
+  if (volume <= 116)
+  {
+    volume += 12;
+    Mix_VolumeMusic(volume);
+  }
+}
+
+void volumeDown()
+{
+  if (volume >= 12)
+  {
+    volume -= 12;
+    Mix_VolumeMusic(volume);
+  }
+}
+
 int main() {
   /***************************    LOAD MUSIC     ***********************************/
    //Initialize SDL_mixer
@@ -54,12 +74,14 @@ int main() {
     return -1;
   }
   //Load music
-	gMusic = Mix_LoadMUS( "./music/gruppa-krovi.mp3");
+	gMusic = Mix_LoadMUS( "./music/vinhtuyBridge.mp3");
 	if( gMusic == NULL )
 	{
 		printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
 		return -1;
 	}
+  Mix_VolumeMusic(volume);
+
   /***********************************************************************************/
   Window GameWindow{"Button", 0};
   GameWindow.SetBackgroundColor(155, 155, 155);
@@ -73,11 +95,17 @@ int main() {
   }
   Layer UI;
   Button PlayButton { &App , "./img/play.png" , playMusic, 
-                    (GameWindow.GetWindowWidth() / 2) - 50, GameWindow.GetWindowHeight() / 2};
+                    (GameWindow.GetWindowWidth() / 2) - 150, GameWindow.GetWindowHeight() / 2};
   Button PauseButton { &App , "./img/pause.png" , pauseMusic, 
-                    (GameWindow.GetWindowWidth() / 2) + 100, GameWindow.GetWindowHeight() / 2};
+                    (GameWindow.GetWindowWidth() / 2) - 50, GameWindow.GetWindowHeight() / 2};
+  Button VolumeUpButton { &App , "./img/volume_up.png" , volumeUp, 
+                    (GameWindow.GetWindowWidth() / 2) + 50, GameWindow.GetWindowHeight() / 2};
+  Button VolumeDownButton { &App , "./img/volume_down.png" , volumeDown, 
+                    (GameWindow.GetWindowWidth() / 2) + 150, GameWindow.GetWindowHeight() / 2};
   UI.SubscribeToEvents(&PlayButton);
   UI.SubscribeToEvents(&PauseButton);
+  UI.SubscribeToEvents(&VolumeUpButton);
+  UI.SubscribeToEvents(&VolumeDownButton);
   SDL_RenderPresent(App.GetRenderer());
 
   SDL_Event Event;
