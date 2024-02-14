@@ -1,5 +1,5 @@
 # SDL-PlayMusic
-This is my own playing music application using SDL2.
+# This is my own playing music application using SDL2.
 
 Use:
 $make all
