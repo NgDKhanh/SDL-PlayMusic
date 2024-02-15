@@ -4,6 +4,7 @@
 #include "Layer.h"
 #include "Button.h"
 #include "Application.h"
+#include "Music.h"
 
 //The music that will be played
 Mix_Music *gMusic = NULL;
@@ -73,13 +74,12 @@ int main() {
     printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
     return -1;
   }
+
   //Load music
-	gMusic = Mix_LoadMUS( "./music/vinhtuyBridge.mp3");
-	if( gMusic == NULL )
-	{
-		printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
-		return -1;
-	}
+  MusicList musicList;
+  musicList.addMusic("./music/vinhtuyBridge.mp3");
+  musicList.addMusic("./music/gruppa-krovi.mp3");
+
   Mix_VolumeMusic(volume);
 
   /***********************************************************************************/
@@ -94,18 +94,26 @@ int main() {
     return -1;
   }
   Layer UI;
-  Button PlayButton { &App , "./img/play.png" , playMusic, 
+
+  Button PlayButton { &App , "./img/play.png" , [&musicList]() { musicList.playMusicList(); }, 
                     (GameWindow.GetWindowWidth() / 2) - 150, GameWindow.GetWindowHeight() / 2};
   Button PauseButton { &App , "./img/pause.png" , pauseMusic, 
                     (GameWindow.GetWindowWidth() / 2) - 50, GameWindow.GetWindowHeight() / 2};
-  Button VolumeUpButton { &App , "./img/volume_up.png" , volumeUp, 
-                    (GameWindow.GetWindowWidth() / 2) + 50, GameWindow.GetWindowHeight() / 2};
   Button VolumeDownButton { &App , "./img/volume_down.png" , volumeDown, 
+                    (GameWindow.GetWindowWidth() / 2) + 50, GameWindow.GetWindowHeight() / 2};
+  Button VolumeUpButton { &App , "./img/volume_up.png" , volumeUp, 
                     (GameWindow.GetWindowWidth() / 2) + 150, GameWindow.GetWindowHeight() / 2};
+  Button PreviousTrackButton { &App , "./img/previous_track.png" , [&musicList]() { musicList.previousTrack(); }, 
+                    (GameWindow.GetWindowWidth() / 2) - 50, (GameWindow.GetWindowHeight() / 2) + 50};                    
+  Button NextTrackButton { &App , "./img/next_track.png" , [&musicList]() { musicList.nextTrack(); }, 
+                    (GameWindow.GetWindowWidth() / 2) + 50, (GameWindow.GetWindowHeight() / 2) + 50}; 
   UI.SubscribeToEvents(&PlayButton);
   UI.SubscribeToEvents(&PauseButton);
   UI.SubscribeToEvents(&VolumeUpButton);
   UI.SubscribeToEvents(&VolumeDownButton);
+  UI.SubscribeToEvents(&NextTrackButton);
+  UI.SubscribeToEvents(&PreviousTrackButton);
+
   SDL_RenderPresent(App.GetRenderer());
 
   SDL_Event Event;

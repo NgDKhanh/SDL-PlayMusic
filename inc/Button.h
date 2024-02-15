@@ -28,6 +28,15 @@ public:
     Update();
   }
 
+  Button(Application* App, const char* imagePath, std::function<void()> f, int x, int y) :
+    App{App}
+  {
+    func = f;
+    setPosition(x, y);
+    LoadTexture(imagePath);
+    Update();
+  }
+
   ~Button() {
     SDL_DestroyTexture(texture);
   }
