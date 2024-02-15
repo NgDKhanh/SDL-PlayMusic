@@ -14,6 +14,24 @@ void MusicList::addMusic(const std::string& path)
     }
 }
 
+void MusicList::addMusicMannual()
+{
+    std::string path;
+    std::cout << "Enter the path to music: ";
+    std::cin >> path;
+    
+    Mix_Music *gMusic = Mix_LoadMUS(path.c_str());
+
+    if(gMusic == nullptr)
+    {
+        std::cerr << "Failed to load music from " << path << ": " << Mix_GetError() << std::endl;
+    }
+    else
+    {
+        listMusic.push_back(std::shared_ptr<Mix_Music>(gMusic, Mix_FreeMusic));
+    }
+}
+
 void MusicList::playMusicList()
 {
     if (!listMusic.empty()) {

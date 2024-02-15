@@ -6,31 +6,9 @@
 #include "Application.h"
 #include "Music.h"
 
-//The music that will be played
-Mix_Music *gMusic = NULL;
-
 void printGoodbye()
 {
   std::cout << "Goodbye" << std::endl;
-}
-
-void playMusic()
-{
-  if (Mix_PlayingMusic() == 0)
-  {
-    //Play the music
-    Mix_PlayMusic( gMusic, -1 );
-    
-  }
-  else
-  {
-    //If the music is paused
-    if( Mix_PausedMusic() == 1 )
-    {
-      //Resume the music
-      Mix_ResumeMusic();
-    }
-  }
 }
 
 void pauseMusic()
@@ -77,8 +55,8 @@ int main() {
 
   //Load music
   MusicList musicList;
-  musicList.addMusic("./music/vinhtuyBridge.mp3");
-  musicList.addMusic("./music/gruppa-krovi.mp3");
+  // musicList.addMusic("./music/vinhtuyBridge.mp3");
+  // musicList.addMusic("./music/gruppa-krovi.mp3");
 
   Mix_VolumeMusic(volume);
 
@@ -104,15 +82,19 @@ int main() {
   Button VolumeUpButton { &App , "./img/volume_up.png" , volumeUp, 
                     (GameWindow.GetWindowWidth() / 2) + 150, GameWindow.GetWindowHeight() / 2};
   Button PreviousTrackButton { &App , "./img/previous_track.png" , [&musicList]() { musicList.previousTrack(); }, 
-                    (GameWindow.GetWindowWidth() / 2) - 50, (GameWindow.GetWindowHeight() / 2) + 50};                    
+                    (GameWindow.GetWindowWidth() / 2) - 50, (GameWindow.GetWindowHeight() / 2) + 60};                    
   Button NextTrackButton { &App , "./img/next_track.png" , [&musicList]() { musicList.nextTrack(); }, 
-                    (GameWindow.GetWindowWidth() / 2) + 50, (GameWindow.GetWindowHeight() / 2) + 50}; 
+                    (GameWindow.GetWindowWidth() / 2) + 50, (GameWindow.GetWindowHeight() / 2) + 60};
+  Button AddMusicButton { &App , "./img/add.png" , [&musicList]() { musicList.addMusicMannual(); }, 
+                    (GameWindow.GetWindowWidth() / 2) - 50, (GameWindow.GetWindowHeight() / 2) - 60};                    
+
   UI.SubscribeToEvents(&PlayButton);
   UI.SubscribeToEvents(&PauseButton);
   UI.SubscribeToEvents(&VolumeUpButton);
   UI.SubscribeToEvents(&VolumeDownButton);
   UI.SubscribeToEvents(&NextTrackButton);
   UI.SubscribeToEvents(&PreviousTrackButton);
+  UI.SubscribeToEvents(&AddMusicButton);
 
   SDL_RenderPresent(App.GetRenderer());
 
@@ -120,8 +102,6 @@ int main() {
   while(true) {
     while(SDL_PollEvent(&Event)) {
       if (Event.type == SDL_QUIT) {
-        Mix_FreeMusic( gMusic );
-        gMusic = NULL;
         SDL_Quit();
         return 0;
       }

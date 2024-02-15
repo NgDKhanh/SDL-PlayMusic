@@ -12,6 +12,8 @@ public:
 
   void addMusic(const std::string& path);
 
+  void addMusicMannual();
+
   void playMusicList();
 
   void nextTrack();
