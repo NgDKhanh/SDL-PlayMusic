@@ -4,12 +4,9 @@
 #include "Layer.h"
 #include "Button.h"
 #include "Application.h"
-#include "Music.h"
-
-void printGoodbye()
-{
-  std::cout << "Goodbye" << std::endl;
-}
+#include "MusicList.h"
+#include <thread>
+#include <chrono>
 
 void pauseMusic()
 {
@@ -57,6 +54,8 @@ int main() {
   MusicList musicList;
   // musicList.addMusic("./music/vinhtuyBridge.mp3");
   // musicList.addMusic("./music/gruppa-krovi.mp3");
+  musicList.addSong("./music/vinhtuyBridge.mp3");
+  musicList.addSong("./music/gruppa-krovi.mp3");
 
   Mix_VolumeMusic(volume);
 
@@ -73,7 +72,7 @@ int main() {
   }
   Layer UI;
 
-  Button PlayButton { &App , "./img/play.png" , [&musicList]() { musicList.playMusicList(); }, 
+  Button PlayButton { &App , "./img/play.png" , [&musicList]() { musicList.playSongList(); }, 
                     (GameWindow.GetWindowWidth() / 2) - 150, GameWindow.GetWindowHeight() / 2};
   Button PauseButton { &App , "./img/pause.png" , pauseMusic, 
                     (GameWindow.GetWindowWidth() / 2) - 50, GameWindow.GetWindowHeight() / 2};
@@ -86,7 +85,9 @@ int main() {
   Button NextTrackButton { &App , "./img/next_track.png" , [&musicList]() { musicList.nextTrack(); }, 
                     (GameWindow.GetWindowWidth() / 2) + 50, (GameWindow.GetWindowHeight() / 2) + 60};
   Button AddMusicButton { &App , "./img/add.png" , [&musicList]() { musicList.addMusicMannual(); }, 
-                    (GameWindow.GetWindowWidth() / 2) - 50, (GameWindow.GetWindowHeight() / 2) - 60};                    
+                    (GameWindow.GetWindowWidth() / 2) - 50, (GameWindow.GetWindowHeight() / 2) - 60};  
+  Button InfoButton { &App , "./img/info.png" , [&musicList]() { musicList.infoMetadata(); }, 
+                    (GameWindow.GetWindowWidth() / 2) + 50, (GameWindow.GetWindowHeight() / 2) - 60};                    
 
   UI.SubscribeToEvents(&PlayButton);
   UI.SubscribeToEvents(&PauseButton);
@@ -95,6 +96,7 @@ int main() {
   UI.SubscribeToEvents(&NextTrackButton);
   UI.SubscribeToEvents(&PreviousTrackButton);
   UI.SubscribeToEvents(&AddMusicButton);
+  UI.SubscribeToEvents(&InfoButton);
 
   SDL_RenderPresent(App.GetRenderer());
 
