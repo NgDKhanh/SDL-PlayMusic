@@ -17,24 +17,24 @@
 #include <string>
 #include <functional>
 
-class Button : public EventReceiver {
+class Button : public EventReceiver, public LTexture {
 public:
-  Button(Application* App, const char* imagePath, void (*f)(), int x, int y) :
-    App{App}
+  Button(Application* App, const char* imagePath, void (*f)(), int x, int y) 
+    // :App{App}
   {
     func = f;
     setPosition(x, y);
-    LoadTexture(imagePath);
-    Update();
+    LoadTexture(imagePath, App->GetRenderer());
+    // Update();
   }
 
-  Button(Application* App, const char* imagePath, std::function<void()> f, int x, int y) :
-    App{App}
+  Button(Application* App, const char* imagePath, std::function<void()> f, int x, int y) 
+    // :App{App}
   {
     func = f;
     setPosition(x, y);
-    LoadTexture(imagePath);
-    Update();
+    LoadTexture(imagePath, App->GetRenderer());
+    // Update();
   }
 
   ~Button() {
@@ -43,8 +43,14 @@ public:
 
   bool HandleEvent(const SDL_Event* Event) override;
 
+  void RenderToScreen(SDL_Renderer* renderer) override 
+  {
+    // Update();
+    SDL_RenderCopy(renderer, texture, nullptr, &Rect);
+  }
+
 private:
-  void LoadTexture(const char* imagePath) {
+  void LoadTexture(const char* imagePath, SDL_Renderer* renderer) {
     // Load image and create texture
     SDL_Surface* loadedSurface = IMG_Load(imagePath);
     if (loadedSurface == nullptr) {
@@ -52,7 +58,7 @@ private:
       return;
     }
 
-    texture = SDL_CreateTextureFromSurface(App->GetRenderer(), loadedSurface);
+    texture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
     if (texture == nullptr) {
       std::cerr << "Failed to create texture! SDL Error: " << SDL_GetError() << std::endl;
       SDL_FreeSurface(loadedSurface);
@@ -84,9 +90,9 @@ private:
     return true;
   }
 
-  void Update() {
-    SDL_RenderCopy(App->GetRenderer(), texture, nullptr, &Rect);
-  }
+  // void Update() {
+  //   SDL_RenderCopy(App->GetRenderer(), texture, nullptr, &Rect);
+  // }
 
   void setPosition(int x = 50, int y = 50)
   {
@@ -96,7 +102,7 @@ private:
 
   bool isHovered { false };
   SDL_Rect Rect { 50, 50, 0, 0 }; // Width and height will be set based on the image size
-  Application* App { nullptr };
+  // Application* App { nullptr };
   SDL_Texture* texture { nullptr };
   std::function<void()> func;
 };

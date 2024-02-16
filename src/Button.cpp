@@ -9,13 +9,13 @@ bool Button::HandleEvent(const SDL_Event* Event) {
         func();
     } 
     else if (
-        Event->type == SDL_MOUSEMOTION) [[likely]]
+        Event->type == SDL_MOUSEMOTION)
         {
         if (isHovered != IsWithinBounds(
             Event->motion.x, Event->motion.y)) 
         {
             isHovered = !isHovered;
-            Update();
+            // Update();
         }
         return isHovered;
     }

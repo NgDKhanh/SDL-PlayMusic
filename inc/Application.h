@@ -1,7 +1,9 @@
 #pragma once
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <vector>
 #include "Window.h"
+#include "Texture.h"
 
 class Application {
 public:
@@ -31,7 +33,24 @@ public:
 
   void Quit();
 
+  void SubscribeToRender(LTexture* RenderedObject) 
+  {
+    renderSubscribers.push_back(RenderedObject);
+  }
+
+  void RenderObjects() {
+    SDL_SetRenderDrawColor( mRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+    SDL_RenderClear(mRenderer);
+
+    for (const auto Object : renderSubscribers) {
+      Object->RenderToScreen(mRenderer);
+    }
+
+    SDL_RenderPresent(mRenderer);
+}
+
 private:
   Window* mWindow;
   SDL_Renderer* mRenderer;
+  std::vector<LTexture*> renderSubscribers;
 };

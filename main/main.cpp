@@ -60,8 +60,8 @@ int main() {
   Mix_VolumeMusic(volume);
 
   /***********************************************************************************/
-  Window GameWindow{"Button", 0};
-  GameWindow.SetBackgroundColor(155, 155, 155);
+  Window GameWindow{"Music Player", SDL_WINDOW_SHOWN};
+  GameWindow.SetBackgroundColor(0x40, 0x40, 0x40);
   GameWindow.Update();
   Application App { &GameWindow };
   int imgFlags = IMG_INIT_PNG;
@@ -98,6 +98,17 @@ int main() {
   UI.SubscribeToEvents(&AddMusicButton);
   UI.SubscribeToEvents(&InfoButton);
 
+  App.SubscribeToRender(&PlayButton);
+  App.SubscribeToRender(&PauseButton);
+  App.SubscribeToRender(&VolumeUpButton);
+  App.SubscribeToRender(&VolumeDownButton);
+  App.SubscribeToRender(&NextTrackButton);
+  App.SubscribeToRender(&PreviousTrackButton);
+  App.SubscribeToRender(&AddMusicButton);
+  App.SubscribeToRender(&InfoButton);
+
+  SDL_SetRenderDrawColor( App.GetRenderer(), 0xFF, 0xFF, 0xFF, 0xFF );
+  SDL_RenderClear(App.GetRenderer());
   SDL_RenderPresent(App.GetRenderer());
 
   SDL_Event Event;
@@ -108,12 +119,13 @@ int main() {
         return 0;
       }
       if (UI.HandleEvent(&Event)) {
-        // SDL_SetRenderDrawColor( App.GetRenderer(), 0x40, 0x40, 0x40, 0xFF );
-        // SDL_RenderClear(App.GetRenderer());
-        SDL_RenderPresent(App.GetRenderer());
         continue;
       }
     }
+    SDL_SetRenderDrawColor( App.GetRenderer(), 0xFF, 0xFF, 0xFF, 0xFF );
+    SDL_RenderClear(App.GetRenderer());
+    App.RenderObjects();
+    SDL_RenderPresent(App.GetRenderer());
     GameWindow.RenderFrame();
   }
 }
