@@ -52,8 +52,6 @@ int main() {
 
   //Load music
   MusicList musicList;
-  // musicList.addMusic("./music/vinhtuyBridge.mp3");
-  // musicList.addMusic("./music/gruppa-krovi.mp3");
   musicList.addSong("./music/vinhtuyBridge.mp3");
   musicList.addSong("./music/gruppa-krovi.mp3");
 
@@ -72,21 +70,21 @@ int main() {
   }
   Layer UI;
 
-  Button PlayButton { &App , "./img/play.png" , [&musicList]() { musicList.playSongList(); }, 
+  Button PlayButton { App.GetRenderer() , "./img/play.png" , [&musicList]() { musicList.playSongList(); }, 
                     (GameWindow.GetWindowWidth() / 2) - 150, GameWindow.GetWindowHeight() / 2};
-  Button PauseButton { &App , "./img/pause.png" , pauseMusic, 
+  Button PauseButton { App.GetRenderer() , "./img/pause.png" , pauseMusic, 
                     (GameWindow.GetWindowWidth() / 2) - 50, GameWindow.GetWindowHeight() / 2};
-  Button VolumeDownButton { &App , "./img/volume_down.png" , volumeDown, 
+  Button VolumeDownButton { App.GetRenderer() , "./img/volume_down.png" , volumeDown, 
                     (GameWindow.GetWindowWidth() / 2) + 50, GameWindow.GetWindowHeight() / 2};
-  Button VolumeUpButton { &App , "./img/volume_up.png" , volumeUp, 
+  Button VolumeUpButton { App.GetRenderer() , "./img/volume_up.png" , volumeUp, 
                     (GameWindow.GetWindowWidth() / 2) + 150, GameWindow.GetWindowHeight() / 2};
-  Button PreviousTrackButton { &App , "./img/previous_track.png" , [&musicList]() { musicList.previousTrack(); }, 
+  Button PreviousTrackButton { App.GetRenderer() , "./img/previous_track.png" , [&musicList]() { musicList.previousTrack(); }, 
                     (GameWindow.GetWindowWidth() / 2) - 50, (GameWindow.GetWindowHeight() / 2) + 60};                    
-  Button NextTrackButton { &App , "./img/next_track.png" , [&musicList]() { musicList.nextTrack(); }, 
+  Button NextTrackButton { App.GetRenderer() , "./img/next_track.png" , [&musicList]() { musicList.nextTrack(); }, 
                     (GameWindow.GetWindowWidth() / 2) + 50, (GameWindow.GetWindowHeight() / 2) + 60};
-  Button AddMusicButton { &App , "./img/add.png" , [&musicList]() { musicList.addMusicMannual(); }, 
+  Button AddMusicButton { App.GetRenderer() , "./img/add.png" , [&musicList]() { musicList.addMusicMannual(); }, 
                     (GameWindow.GetWindowWidth() / 2) - 50, (GameWindow.GetWindowHeight() / 2) - 60};  
-  Button InfoButton { &App , "./img/info.png" , [&musicList]() { musicList.infoMetadata(); }, 
+  Button InfoButton { App.GetRenderer() , "./img/info.png" , [&musicList]() { musicList.infoMetadata(); }, 
                     (GameWindow.GetWindowWidth() / 2) + 50, (GameWindow.GetWindowHeight() / 2) - 60};                    
 
   UI.SubscribeToEvents(&PlayButton);
@@ -107,9 +105,7 @@ int main() {
   App.SubscribeToRender(&AddMusicButton);
   App.SubscribeToRender(&InfoButton);
 
-  SDL_SetRenderDrawColor( App.GetRenderer(), 0xFF, 0xFF, 0xFF, 0xFF );
-  SDL_RenderClear(App.GetRenderer());
-  SDL_RenderPresent(App.GetRenderer());
+  App.RenderObjects();
 
   SDL_Event Event;
   while(true) {
@@ -119,13 +115,10 @@ int main() {
         return 0;
       }
       if (UI.HandleEvent(&Event)) {
+        App.RenderObjects();
         continue;
       }
     }
-    SDL_SetRenderDrawColor( App.GetRenderer(), 0xFF, 0xFF, 0xFF, 0xFF );
-    SDL_RenderClear(App.GetRenderer());
-    App.RenderObjects();
-    SDL_RenderPresent(App.GetRenderer());
     GameWindow.RenderFrame();
   }
 }

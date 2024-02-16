@@ -19,22 +19,19 @@
 
 class Button : public EventReceiver, public LTexture {
 public:
-  Button(Application* App, const char* imagePath, void (*f)(), int x, int y) 
+  Button(SDL_Renderer *renderer, const char* imagePath, void (*f)(), int x, int y) 
     // :App{App}
   {
     func = f;
     setPosition(x, y);
-    LoadTexture(imagePath, App->GetRenderer());
-    // Update();
+    LoadTexture(imagePath, renderer);
   }
 
-  Button(Application* App, const char* imagePath, std::function<void()> f, int x, int y) 
-    // :App{App}
+  Button(SDL_Renderer *renderer, const char* imagePath, std::function<void()> f, int x, int y) 
   {
     func = f;
     setPosition(x, y);
-    LoadTexture(imagePath, App->GetRenderer());
-    // Update();
+    LoadTexture(imagePath, renderer);
   }
 
   ~Button() {
@@ -45,7 +42,6 @@ public:
 
   void RenderToScreen(SDL_Renderer* renderer) override 
   {
-    // Update();
     SDL_RenderCopy(renderer, texture, nullptr, &Rect);
   }
 
@@ -90,10 +86,6 @@ private:
     return true;
   }
 
-  // void Update() {
-  //   SDL_RenderCopy(App->GetRenderer(), texture, nullptr, &Rect);
-  // }
-
   void setPosition(int x = 50, int y = 50)
   {
     Rect.x = x;
@@ -102,7 +94,6 @@ private:
 
   bool isHovered { false };
   SDL_Rect Rect { 50, 50, 0, 0 }; // Width and height will be set based on the image size
-  // Application* App { nullptr };
   SDL_Texture* texture { nullptr };
   std::function<void()> func;
 };
