@@ -1,0 +1,320 @@
+Thread 1 "main" hit Breakpoint 1, main () at main/main.cpp:131
+131     }
+(gdb) s
+Button::~Button (this=0x7fffffffd5d0, __in_chrg=<optimized out>) at inc/Button.h:38
+38        ~Button() {
+(gdb) s
+40        }
+(gdb) s
+std::function<void ()>::~function() (this=0x7fffffffd608, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/std_function.h:334
+334         class function<_Res(_ArgTypes...)>
+(gdb) s
+std::_Function_base::~_Function_base (this=0x7fffffffd608, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/std_function.h:243
+243           if (_M_manager)
+(gdb) s
+244             _M_manager(_M_functor, _M_functor, __destroy_functor);
+(gdb) s
+std::_Function_handler<void(), main()::<lambda()> >::_M_manager(std::_Any_data &, const std::_Any_data &, std::_Manager_operation) (__dest=..., __source=..., __op=std::__destroy_functor) at /usr/include/c++/11/bits/std_function.h:270
+270             switch (__op)
+(gdb) s
+282                 _Base::_M_manager(__dest, __source, __op);
+(gdb) s
+std::_Function_base::_Base_manager<main()::<lambda()> >::_M_manager(std::_Any_data &, const std::_Any_data &, std::_Manager_operation) (__dest=..., __source=..., __op=std::__destroy_functor) at /usr/include/c++/11/bits/std_function.h:183
+183               switch (__op)
+(gdb) s
+203                   _M_destroy(__dest, _Local_storage());
+(gdb) s
+std::_Function_base::_Base_manager<main()::<lambda()> >::_M_destroy(std::_Any_data &, std::true_type) (__victim=...) at /usr/include/c++/11/bits/std_function.h:168
+168               __victim._M_access<_Functor>().~_Functor();
+(gdb) s
+std::_Any_data::_M_access<main()::<lambda()> >(void) (this=0x7fffffffd608) at /usr/include/c++/11/bits/std_function.h:91
+91            { return *static_cast<_Tp*>(_M_access()); }
+(gdb) s
+std::_Any_data::_M_access (this=0x7fffffffd608) at /usr/include/c++/11/bits/std_function.h:85
+85          void*       _M_access()       { return &_M_pod_data[0]; }
+(gdb) s
+std::_Any_data::_M_access<main()::<lambda()> >(void) (this=0x7fffffffd608) at /usr/include/c++/11/bits/std_function.h:91
+91            { return *static_cast<_Tp*>(_M_access()); }
+(gdb) s
+std::_Function_base::_Base_manager<main()::<lambda()> >::_M_destroy(std::_Any_data &, std::true_type) (__victim=...) at /usr/include/c++/11/bits/std_function.h:169
+169             }
+(gdb) s
+std::_Function_base::_Base_manager<main()::<lambda()> >::_M_manager(std::_Any_data &, const std::_Any_data &, std::_Manager_operation) (__dest=..., __source=..., __op=std::__destroy_functor) at /usr/include/c++/11/bits/std_function.h:204
+204                   break;
+(gdb) s
+206               return false;
+(gdb) s
+207             }
+(gdb) s
+std::_Function_handler<void(), main()::<lambda()> >::_M_manager(std::_Any_data &, const std::_Any_data &, std::_Manager_operation) (__dest=..., __source=..., __op=std::__destroy_functor) at /usr/include/c++/11/bits/std_function.h:284
+284             return false;
+(gdb) s
+285           }
+(gdb) s
+std::_Function_base::~_Function_base (this=0x7fffffffd608, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/std_function.h:245
+245         }
+(gdb) s
+std::shared_ptr<SDL_Texture>::~shared_ptr (this=0x7fffffffd5f8, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/shared_ptr.h:122
+122         class shared_ptr : public __shared_ptr<_Tp>
+(gdb) s
+std::__shared_ptr<SDL_Texture, (__gnu_cxx::_Lock_policy)2>::~__shared_ptr (this=0x7fffffffd5f8, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/shared_ptr_base.h:1154
+1154          ~__shared_ptr() = default;
+(gdb) s
+std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count (this=0x7fffffffd600, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/shared_ptr_base.h:704
+704             if (_M_pi != nullptr)
+(gdb) s
+705               _M_pi->_M_release();
+(gdb) s
+std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release (this=0x555556395830) at /usr/include/c++/11/bits/shared_ptr_base.h:165
+165             if (__gnu_cxx::__exchange_and_add_dispatch(&_M_use_count, -1) == 1)
+(gdb) s
+__gnu_cxx::__exchange_and_add_dispatch (__val=-1, __mem=0x555556395838) at /usr/include/c++/11/ext/atomicity.h:98
+98          if (__is_single_threaded())
+(gdb) s
+__gnu_cxx::__is_single_threaded () at /usr/include/c++/11/ext/atomicity.h:52
+52          return ::__libc_single_threaded;
+(gdb) s
+__gnu_cxx::__exchange_and_add_dispatch (__val=-1, __mem=0x555556395838) at /usr/include/c++/11/ext/atomicity.h:98
+98          if (__is_single_threaded())
+(gdb) s
+101           return __exchange_and_add(__mem, __val);
+(gdb) s
+__gnu_cxx::__exchange_and_add (__val=-1, __mem=0x555556395838) at /usr/include/c++/11/ext/atomicity.h:66
+66        { return __atomic_fetch_add(__mem, __val, __ATOMIC_ACQ_REL); }
+(gdb) s
+__gnu_cxx::__exchange_and_add_dispatch (__val=-1, __mem=0x555556395838) at /usr/include/c++/11/ext/atomicity.h:101
+101           return __exchange_and_add(__mem, __val);
+(gdb) s
+std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release (this=0x555556395830) at /usr/include/c++/11/bits/shared_ptr_base.h:165
+165             if (__gnu_cxx::__exchange_and_add_dispatch(&_M_use_count, -1) == 1)
+(gdb) s
+168                 _M_dispose();
+(gdb) s
+std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_dispose (this=0x555556395830) at /usr/include/c++/11/bits/shared_ptr_base.h:442
+442           { _M_impl._M_del()(_M_impl._M_ptr); }
+(gdb) s
+std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_Impl::_M_del (this=0x555556395840) at /usr/include/c++/11/bits/shared_ptr_base.h:421
+421             _Deleter& _M_del() noexcept { return _Del_base::_S_get(*this); }
+(gdb) s
+std::_Sp_ebo_helper<0, void (*)(SDL_Texture*), false>::_S_get (__eboh=...) at /usr/include/c++/11/bits/shared_ptr_base.h:401
+401           { return __eboh._M_tp; }
+(gdb) s
+std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_Impl::_M_del (this=0x555556395840) at /usr/include/c++/11/bits/shared_ptr_base.h:421
+421             _Deleter& _M_del() noexcept { return _Del_base::_S_get(*this); }
+(gdb) s
+std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_dispose (this=0x555556395830) at /usr/include/c++/11/bits/shared_ptr_base.h:442
+442           { _M_impl._M_del()(_M_impl._M_ptr); }
+(gdb) s
+std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release (this=0x555556395830) at /usr/include/c++/11/bits/shared_ptr_base.h:180
+180                 if (__gnu_cxx::__exchange_and_add_dispatch(&_M_weak_count,
+(gdb) s
+__gnu_cxx::__exchange_and_add_dispatch (__val=-1, __mem=0x55555639583c) at /usr/include/c++/11/ext/atomicity.h:98
+98          if (__is_single_threaded())
+(gdb) s
+__gnu_cxx::__is_single_threaded () at /usr/include/c++/11/ext/atomicity.h:52
+52          return ::__libc_single_threaded;
+(gdb) s
+__gnu_cxx::__exchange_and_add_dispatch (__val=-1, __mem=0x55555639583c) at /usr/include/c++/11/ext/atomicity.h:98
+98          if (__is_single_threaded())
+(gdb) s
+101           return __exchange_and_add(__mem, __val);
+(gdb) s
+__gnu_cxx::__exchange_and_add (__val=-1, __mem=0x55555639583c) at /usr/include/c++/11/ext/atomicity.h:66
+66        { return __atomic_fetch_add(__mem, __val, __ATOMIC_ACQ_REL); }
+(gdb) s
+__gnu_cxx::__exchange_and_add_dispatch (__val=-1, __mem=0x55555639583c) at /usr/include/c++/11/ext/atomicity.h:101
+101           return __exchange_and_add(__mem, __val);
+(gdb) s
+std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release (this=0x555556395830) at /usr/include/c++/11/bits/shared_ptr_base.h:181
+181                                                            -1) == 1)
+(gdb) s
+180                 if (__gnu_cxx::__exchange_and_add_dispatch(&_M_weak_count,
+(gdb) s
+184                     _M_destroy();
+(gdb) s
+std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_destroy (this=0x555556395830) at /usr/include/c++/11/bits/shared_ptr_base.h:445
+445           _M_destroy() noexcept
+(gdb) s
+447             __allocator_type __a(_M_impl._M_alloc());
+(gdb) s
+std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_Impl::_M_alloc (this=0x555556395840) at /usr/include/c++/11/bits/shared_ptr_base.h:422
+422             _Alloc& _M_alloc() noexcept { return _Alloc_base::_S_get(*this); }
+(gdb) s
+std::_Sp_ebo_helper<1, std::allocator<void>, true>::_S_get (__eboh=...) at /usr/include/c++/11/bits/shared_ptr_base.h:389
+389           _S_get(_Sp_ebo_helper& __eboh) { return static_cast<_Tp&>(__eboh); }
+(gdb) s
+std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_Impl::_M_alloc (this=0x555556395840) at /usr/include/c++/11/bits/shared_ptr_base.h:422
+422             _Alloc& _M_alloc() noexcept { return _Alloc_base::_S_get(*this); }
+(gdb) s
+std::allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> >::allocator<void> (this=0x7fffffffd39f) at /usr/include/c++/11/bits/allocator.h:169
+169             allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+(gdb) s
+__gnu_cxx::new_allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> >::new_allocator (this=0x7fffffffd39f) at /usr/include/c++/11/ext/new_allocator.h:79
+79            new_allocator() _GLIBCXX_USE_NOEXCEPT { }
+(gdb) s
+std::allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> >::allocator<void> (this=0x7fffffffd39f) at /usr/include/c++/11/bits/allocator.h:169
+169             allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+(gdb) s
+std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_destroy (this=0x555556395830) at /usr/include/c++/11/bits/shared_ptr_base.h:448
+448             __allocated_ptr<__allocator_type> __guard_ptr{ __a, this };
+(gdb) s
+std::__allocated_ptr<std::allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> > >::__allocated_ptr (this=0x7fffffffd3a0, __a=..., __ptr=0x555556395830) at /usr/include/c++/11/bits/allocated_ptr.h:54
+54            : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+(gdb) s
+std::__addressof<std::allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> > > (__r=...) at /usr/include/c++/11/bits/move.h:50
+50          { return __builtin_addressof(__r); }
+(gdb) s
+std::__allocated_ptr<std::allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> > >::__allocated_ptr (this=0x7fffffffd3a0, __a=..., __ptr=0x555556395830) at /usr/include/c++/11/bits/allocated_ptr.h:54
+54            : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+(gdb) s
+55            { }
+(gdb) s
+std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_destroy (this=0x555556395830) at /usr/include/c++/11/bits/shared_ptr_base.h:449
+449             this->~_Sp_counted_deleter();
+(gdb) s
+std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::~_Sp_counted_deleter (this=0x555556395830, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/shared_ptr_base.h:438
+438           ~_Sp_counted_deleter() noexcept { }
+(gdb) s
+std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::~_Sp_counted_base (this=0x555556395830, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/shared_ptr_base.h:131
+131           { }
+(gdb) s
+std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_destroy (this=0x555556395830) at /usr/include/c++/11/bits/shared_ptr_base.h:450
+450           }
+(gdb) s
+std::__allocated_ptr<std::allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> > >::~__allocated_ptr (this=0x7fffffffd3a0, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/allocated_ptr.h:73
+73              if (_M_ptr != nullptr)
+(gdb) s
+74                std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+(gdb) s
+std::allocator_traits<std::allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> > >::deallocate (__a=..., __p=0x555556395830, __n=1) at /usr/include/c++/11/bits/alloc_traits.h:496
+496           { __a.deallocate(__p, __n); }
+(gdb) s
+__gnu_cxx::new_allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> >::deallocate (this=0x7fffffffd39f, __p=0x555556395830, __t=1) at /usr/include/c++/11/ext/new_allocator.h:145
+145             ::operator delete(__p
+(gdb) s
+150           }
+(gdb) s
+std::allocator_traits<std::allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> > >::deallocate (__a=..., __p=0x555556395830, __n=1) at /usr/include/c++/11/bits/alloc_traits.h:496
+496           { __a.deallocate(__p, __n); }
+(gdb) s
+std::__allocated_ptr<std::allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> > >::~__allocated_ptr (this=0x7fffffffd3a0, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/allocated_ptr.h:75
+75            }
+(gdb) s
+std::allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> >::~allocator (this=0x7fffffffd39f, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/allocator.h:174
+174           ~allocator() _GLIBCXX_NOTHROW { }
+(gdb) s
+__gnu_cxx::new_allocator<std::_Sp_counted_deleter<SDL_Texture*, void (*)(SDL_Texture*), std::allocator<void>, (__gnu_cxx::_Lock_policy)2> >::~new_allocator (this=0x7fffffffd39f, __in_chrg=<optimized out>) at /usr/include/c++/11/ext/new_allocator.h:89
+89            ~new_allocator() _GLIBCXX_USE_NOEXCEPT { }
+(gdb) s
+std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release (this=0x555556395830) at /usr/include/c++/11/bits/shared_ptr_base.h:187
+187           }
+(gdb) s
+std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count (this=0x7fffffffd600, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/shared_ptr_base.h:706
+706           }
+(gdb) s
+Layer::~Layer (this=0x7fffffffd4d0, __in_chrg=<optimized out>) at inc/Layer.h:7
+7       class Layer {
+(gdb) s
+std::vector<std::shared_ptr<EventReceiver>, std::allocator<std::shared_ptr<EventReceiver> > >::~vector (this=0x7fffffffd4d0, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/stl_vector.h:681
+681                           _M_get_Tp_allocator());
+(gdb) s
+std::_Vector_base<std::shared_ptr<EventReceiver>, std::allocator<std::shared_ptr<EventReceiver> > >::_M_get_Tp_allocator (this=0x7fffffffd4d0) at /usr/include/c++/11/bits/stl_vector.h:277
+277           { return this->_M_impl; }
+(gdb) s
+std::vector<std::shared_ptr<EventReceiver>, std::allocator<std::shared_ptr<EventReceiver> > >::~vector (this=0x7fffffffd4d0, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/stl_vector.h:680
+680             std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
+(gdb) s
+std::_Destroy<std::shared_ptr<EventReceiver>*, std::shared_ptr<EventReceiver> > (__first=0x555556395610, __last=0x555556395620) at /usr/include/c++/11/bits/alloc_traits.h:848
+848           _Destroy(__first, __last);
+(gdb) s
+std::_Destroy<std::shared_ptr<EventReceiver>*> (__first=0x555556395610, __last=0x555556395620) at /usr/include/c++/11/bits/stl_construct.h:196
+196             __destroy(__first, __last);
+(gdb) s
+std::_Destroy_aux<false>::__destroy<std::shared_ptr<EventReceiver>*> (__first=0x555556395610, __last=0x555556395620) at /usr/include/c++/11/bits/stl_construct.h:162
+162               for (; __first != __last; ++__first)
+(gdb) s
+163                 std::_Destroy(std::__addressof(*__first));
+(gdb) s
+std::__addressof<std::shared_ptr<EventReceiver> > (__r=std::shared_ptr<EventReceiver> (use count 1, weak count 0) = {...}) at /usr/include/c++/11/bits/move.h:50
+50          { return __builtin_addressof(__r); }
+(gdb) s
+std::_Destroy<std::shared_ptr<EventReceiver> > (__pointer=0x555556395610) at /usr/include/c++/11/bits/stl_construct.h:151
+151           __pointer->~_Tp();
+(gdb) s
+std::shared_ptr<EventReceiver>::~shared_ptr (this=0x555556395610, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/shared_ptr.h:122
+122         class shared_ptr : public __shared_ptr<_Tp>
+(gdb) s
+std::__shared_ptr<EventReceiver, (__gnu_cxx::_Lock_policy)2>::~__shared_ptr (this=0x555556395610, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/shared_ptr_base.h:1154
+1154          ~__shared_ptr() = default;
+(gdb) s
+std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count (this=0x555556395618, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/shared_ptr_base.h:704
+704             if (_M_pi != nullptr)
+(gdb) s
+705               _M_pi->_M_release();
+(gdb) s
+std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release (this=0x55555634ea90) at /usr/include/c++/11/bits/shared_ptr_base.h:165
+165             if (__gnu_cxx::__exchange_and_add_dispatch(&_M_use_count, -1) == 1)
+(gdb) s
+__gnu_cxx::__exchange_and_add_dispatch (__val=-1, __mem=0x55555634ea98) at /usr/include/c++/11/ext/atomicity.h:98
+98          if (__is_single_threaded())
+(gdb) s
+__gnu_cxx::__is_single_threaded () at /usr/include/c++/11/ext/atomicity.h:52
+52          return ::__libc_single_threaded;
+(gdb) s
+__gnu_cxx::__exchange_and_add_dispatch (__val=-1, __mem=0x55555634ea98) at /usr/include/c++/11/ext/atomicity.h:98
+98          if (__is_single_threaded())
+(gdb) s
+101           return __exchange_and_add(__mem, __val);
+(gdb) s
+__gnu_cxx::__exchange_and_add (__val=-1, __mem=0x55555634ea98) at /usr/include/c++/11/ext/atomicity.h:66
+66        { return __atomic_fetch_add(__mem, __val, __ATOMIC_ACQ_REL); }
+(gdb) s
+__gnu_cxx::__exchange_and_add_dispatch (__val=-1, __mem=0x55555634ea98) at /usr/include/c++/11/ext/atomicity.h:101
+101           return __exchange_and_add(__mem, __val);
+(gdb) s
+std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release (this=0x55555634ea90) at /usr/include/c++/11/bits/shared_ptr_base.h:165
+165             if (__gnu_cxx::__exchange_and_add_dispatch(&_M_use_count, -1) == 1)
+(gdb) s
+168                 _M_dispose();
+(gdb) s
+std::_Sp_counted_ptr<EventReceiver*, (__gnu_cxx::_Lock_policy)2>::_M_dispose (this=0x55555634ea90) at /usr/include/c++/11/bits/shared_ptr_base.h:348
+348           { delete _M_ptr; }
+(gdb) bt
+#0  std::_Sp_counted_ptr<EventReceiver*, (__gnu_cxx::_Lock_policy)2>::_M_dispose() (this=0x55555634b120)
+    at /usr/include/c++/11/bits/shared_ptr_base.h:348
+#1  0x00005555555593ab in std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release() (this=0x55555634b120)
+    at /usr/include/c++/11/bits/shared_ptr_base.h:168
+#2  0x0000555555559233 in std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count() (this=0x555556391ca8, __in_chrg=<optimized out>)
+    at /usr/include/c++/11/bits/shared_ptr_base.h:705
+#3  0x0000555555559086 in std::__shared_ptr<EventReceiver, (__gnu_cxx::_Lock_policy)2>::~__shared_ptr()
+    (this=0x555556391ca0, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/shared_ptr_base.h:1154
+#4  0x00005555555590a6 in std::shared_ptr<EventReceiver>::~shared_ptr() (this=0x555556391ca0, __in_chrg=<optimized out>)
+    at /usr/include/c++/11/bits/shared_ptr.h:122
+#5  0x0000555555561c88 in std::_Destroy<std::shared_ptr<EventReceiver> >(std::shared_ptr<EventReceiver>*) (__pointer=0x555556391ca0)
+    at /usr/include/c++/11/bits/stl_construct.h:151
+#6  0x00005555555617bf in std::_Destroy_aux<false>::__destroy<std::shared_ptr<EventReceiver>*>(std::shared_ptr<EventReceiver>*, std::shared_ptr<EventReceiver>*) (__first=0x555556391ca0, __last=0x555556391cb0) at /usr/include/c++/11/bits/stl_construct.h:163
+#7  0x0000555555560f96 in std::_Destroy<std::shared_ptr<EventReceiver>*>(std::shared_ptr<EventReceiver>*, std::shared_ptr<EventReceiver>*)
+    (__first=0x555556391ca0, __last=0x555556391cb0) at /usr/include/c++/11/bits/stl_construct.h:196
+#8  0x000055555556074e in std::_Destroy<std::shared_ptr<EventReceiver>*, std::shared_ptr<EventReceiver> >(std::shared_ptr<EventReceiver>*, std::shared_ptr<EventReceiver>*, std::allocator<std::shared_ptr<EventReceiver> >&) (__first=0x555556391ca0, __last=0x555556391cb0)
+    at /usr/include/c++/11/bits/alloc_traits.h:848
+#9  0x000055555555fe35 in std::vector<std::shared_ptr<EventReceiver>, std::allocator<std::shared_ptr<EventReceiver> > >::~vector()
+    (this=0x7fffffffdaf0, __in_chrg=<optimized out>) at /usr/include/c++/11/bits/stl_vector.h:680
+#10 0x000055555555f608 in Layer::~Layer() (this=0x7fffffffdaf0, __in_chrg=<optimized out>) at inc/Layer.h:7
+#11 0x000055555555e416 in main() () at main/main.cpp:131
+
+(gdb) s
+free(): invalid pointer
+
+Thread 1 "main" received signal SIGABRT, Aborted.
+__pthread_kill_implementation (no_tid=0, signo=6, threadid=140737291368512) at ./nptl/pthread_kill.c:44
+44      ./nptl/pthread_kill.c: No such file or directory.
+(gdb) s
+Couldn't get registers: No such process.
+(gdb) [Thread 0x7fffcd2dc640 (LWP 20550) exited]
+[Thread 0x7ffff4423840 (LWP 20544) exited]
+[Thread 0x7fffccadb640 (LWP 20555) exited]
+[New process 20544]
+
+Program terminated with signal SIGABRT, Aborted.
+The program no longer exists.
+(gdb) quit

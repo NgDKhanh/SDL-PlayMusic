@@ -2,6 +2,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <string>
+#include <memory>
 
 class Window {
 public:
@@ -35,25 +36,25 @@ public:
   }
 
   SDL_Surface* GetSurface() {
-    return SDLWindowSurface;
+    return SDLWindowSurface.get();
   }
 
   void GrabMouse() {
-    SDL_SetWindowMouseGrab(SDLWindow, SDL_TRUE);
+    SDL_SetWindowMouseGrab(SDLWindow.get(), SDL_TRUE);
   }
 
   void FreeMouse() {
-    SDL_SetWindowMouseGrab(SDLWindow, SDL_FALSE);
+    SDL_SetWindowMouseGrab(SDLWindow.get(), SDL_FALSE);
   }
 
   SDL_Window* GetSDLWindow() const
   {
-    return SDLWindow;
+    return SDLWindow.get();
   }
 
 private:
-  SDL_Window* SDLWindow { nullptr };
-  SDL_Surface* SDLWindowSurface { nullptr };
+  std::shared_ptr<SDL_Window> SDLWindow { nullptr };
+  std::shared_ptr<SDL_Surface> SDLWindowSurface { nullptr };
 
   int windowWidth { 640 };
   int windowHeight { 480 };

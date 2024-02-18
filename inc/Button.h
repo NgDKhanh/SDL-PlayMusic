@@ -16,6 +16,7 @@
 #include <iostream>
 #include <string>
 #include <functional>
+#include <memory>
 
 class Button : public EventReceiver, public LTexture {
 public:
@@ -35,14 +36,14 @@ public:
   }
 
   ~Button() {
-    SDL_DestroyTexture(texture);
+    // SDL_DestroyTexture(texture);
   }
 
   bool HandleEvent(const SDL_Event* Event) override;
 
   void RenderToScreen(SDL_Renderer* renderer) override 
   {
-    SDL_RenderCopy(renderer, texture, nullptr, &Rect);
+    SDL_RenderCopy(renderer, texture.get(), nullptr, &Rect);
   }
 
 private:
@@ -54,7 +55,7 @@ private:
       return;
     }
 
-    texture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+    texture = std::shared_ptr<SDL_Texture>(SDL_CreateTextureFromSurface(renderer, loadedSurface), SDL_DestroyTexture);
     if (texture == nullptr) {
       std::cerr << "Failed to create texture! SDL Error: " << SDL_GetError() << std::endl;
       SDL_FreeSurface(loadedSurface);
@@ -94,6 +95,6 @@ private:
 
   bool isHovered { false };
   SDL_Rect Rect { 50, 50, 0, 0 }; // Width and height will be set based on the image size
-  SDL_Texture* texture { nullptr };
+  std::shared_ptr<SDL_Texture> texture { nullptr };
   std::function<void()> func;
 };
