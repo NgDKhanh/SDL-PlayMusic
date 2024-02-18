@@ -2,6 +2,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <vector>
+#include <memory>
 #include "Window.h"
 #include "Texture.h"
 
@@ -35,14 +36,14 @@ public:
 
   void SubscribeToRender(LTexture* RenderedObject) 
   {
-    renderSubscribers.push_back(RenderedObject);
+    renderSubscribers.push_back(std::shared_ptr<LTexture>(RenderedObject));
   }
 
   void RenderObjects() {
     SDL_SetRenderDrawColor( mRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
     SDL_RenderClear(mRenderer);
 
-    for (const auto Object : renderSubscribers) {
+    for (const auto &Object : renderSubscribers) {
       Object->RenderToScreen(mRenderer);
     }
 
@@ -52,5 +53,5 @@ public:
 private:
   Window* mWindow;
   SDL_Renderer* mRenderer;
-  std::vector<LTexture*> renderSubscribers;
+  std::vector<std::shared_ptr<LTexture>> renderSubscribers;
 };

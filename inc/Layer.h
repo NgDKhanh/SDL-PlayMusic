@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <SDL2/SDL.h>
+#include <memory>
 #include "EventReceiver.h"
 
 class Layer {
@@ -10,5 +11,5 @@ public:
   void SubscribeToEvents(EventReceiver* Receiver);
 
 private:
-  std::vector<EventReceiver*> Subscribers;
+  std::vector<std::shared_ptr<EventReceiver>> Subscribers;
 };

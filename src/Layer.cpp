@@ -1,7 +1,7 @@
 #include "Layer.h"
 
 bool Layer::HandleEvent(const SDL_Event* Event) {
-    for (const auto Handler : Subscribers) {
+    for (const auto &Handler : Subscribers) {
         if (Handler->HandleEvent(Event)) {
         return true;
         }
@@ -10,5 +10,5 @@ bool Layer::HandleEvent(const SDL_Event* Event) {
 }
 
 void Layer::SubscribeToEvents(EventReceiver* Receiver) {
-    Subscribers.push_back(Receiver);
+    Subscribers.push_back(std::shared_ptr<EventReceiver>(Receiver));
 }

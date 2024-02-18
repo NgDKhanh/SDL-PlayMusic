@@ -5,7 +5,6 @@ bool Button::HandleEvent(const SDL_Event* Event) {
         Event->button.button == SDL_BUTTON_LEFT &&
         isHovered) 
     {
-        // App->Quit();
         func();
     } 
     else if (
@@ -15,7 +14,6 @@ bool Button::HandleEvent(const SDL_Event* Event) {
             Event->motion.x, Event->motion.y)) 
         {
             isHovered = !isHovered;
-            // Update();
         }
         return isHovered;
     }
