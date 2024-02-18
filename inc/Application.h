@@ -36,7 +36,7 @@ public:
 
   void SubscribeToRender(LTexture* RenderedObject) 
   {
-    renderSubscribers.push_back(std::shared_ptr<LTexture>(RenderedObject));
+    renderSubscribers.push_back(RenderedObject);
   }
 
   void RenderObjects() {
@@ -51,7 +51,7 @@ public:
 }
 
 private:
-  std::shared_ptr<Window> mWindow;
+  Window* mWindow;
   std::shared_ptr<SDL_Renderer> mRenderer;
-  std::vector<std::shared_ptr<LTexture>> renderSubscribers;
+  std::vector<LTexture*> renderSubscribers;
 };

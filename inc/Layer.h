@@ -11,5 +11,5 @@ public:
   void SubscribeToEvents(EventReceiver* Receiver);
 
 private:
-  std::vector<std::shared_ptr<EventReceiver>> Subscribers;
+  std::vector<EventReceiver*> Subscribers;
 };

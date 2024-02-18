@@ -36,7 +36,7 @@ public:
   }
 
   ~Button() {
-    // SDL_DestroyTexture(texture);
+    // SDL_DestroyTexture(texture.get());
   }
 
   bool HandleEvent(const SDL_Event* Event) override;

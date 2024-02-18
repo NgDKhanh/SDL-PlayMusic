@@ -36,7 +36,7 @@ public:
   }
 
   SDL_Surface* GetSurface() {
-    return SDLWindowSurface.get();
+    return SDLWindowSurface;
   }
 
   void GrabMouse() {
@@ -54,7 +54,7 @@ public:
 
 private:
   std::shared_ptr<SDL_Window> SDLWindow { nullptr };
-  std::shared_ptr<SDL_Surface> SDLWindowSurface { nullptr };
+  SDL_Surface* SDLWindowSurface { nullptr };
 
   int windowWidth { 640 };
   int windowHeight { 480 };

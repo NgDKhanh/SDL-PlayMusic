@@ -8,10 +8,10 @@ Window::Window()
     "Hello Window", 0, 0, 640, 480, 0
   ), SDL_DestroyWindow);
 
-  SDLWindowSurface = std::shared_ptr<SDL_Surface>(SDL_GetWindowSurface(SDLWindow.get()), SDL_FreeSurface);
+  SDLWindowSurface = SDL_GetWindowSurface(SDLWindow.get());
 
   SDL_FillRect(
-    SDLWindowSurface.get(),
+    SDLWindowSurface,
     nullptr,
     SDL_MapRGB(SDLWindowSurface->format, 40, 40, 40)
   );
@@ -28,10 +28,10 @@ Window::Window(const char *title,
     title, x, y, w, h, flags
   ), SDL_DestroyWindow);
 
-  SDLWindowSurface = std::shared_ptr<SDL_Surface>(SDL_GetWindowSurface(SDLWindow.get()), SDL_FreeSurface);
+  SDLWindowSurface = SDL_GetWindowSurface(SDLWindow.get()), SDL_FreeSurface;
 
   SDL_FillRect(
-    SDLWindowSurface.get(),
+    SDLWindowSurface,
     nullptr,
     SDL_MapRGB(SDLWindowSurface->format, r, g, b)
   );
@@ -48,7 +48,7 @@ Window::Window(std::string title, Uint32 flags)
       windowWidth, windowHeight, flags
   ), SDL_DestroyWindow);
 
-  SDLWindowSurface = std::shared_ptr<SDL_Surface>(SDL_GetWindowSurface(SDLWindow.get()), SDL_FreeSurface);
+  SDLWindowSurface = SDL_GetWindowSurface(SDLWindow.get());
 }
 
 void Window::RenderFrame()
@@ -59,7 +59,7 @@ void Window::RenderFrame()
 void Window::Update()
 {
   SDL_FillRect(
-    SDLWindowSurface.get(),
+    SDLWindowSurface,
     nullptr,
     SDL_MapRGB(
       SDLWindowSurface->format,
