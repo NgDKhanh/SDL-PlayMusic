@@ -15,6 +15,11 @@ public:
 
   Window(std::string title, Uint32 flags);
 
+  ~Window()
+  {
+    // SDL_FreeSurface(SDLWindowSurface);
+  }
+
   void RenderFrame();
 
   void Update();
