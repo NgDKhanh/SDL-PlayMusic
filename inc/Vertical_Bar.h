@@ -5,10 +5,10 @@
 #include "Texture.h"
 #include "Application.h"
 
-class Bar : public LTexture
+class Vertical_Bar : public LTexture
 {
 public:
-    Bar(Application* App, const char* imagePath, int x, int y);
+    Vertical_Bar(Application* App, const char* imagePath, int x, int y);
 
     void RenderToScreen(SDL_Renderer* renderer) override;
 
@@ -18,7 +18,7 @@ public:
             Value = value;
     }
 
-    int GetBarHeght() const
+    int GetVertical_BarHeght() const
     {
         return MaxValue;
     }
