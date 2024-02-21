@@ -11,6 +11,10 @@ set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_FLAGS_RELEASE "-O0 -Wall -Wextra -Wpedantic -g")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#Setting sources code directory and include directory
+set(SOURCE_DIR src) 
+set(INCLUDE_DIR inc) 
+
 # Needed so that cmake uses our find modules.
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -33,9 +37,6 @@ include_directories(
 
 #Add sub-modules
 
-#Setting sources code and executable names
-set(SOURCE_DIR src) 
-
 file(GLOB SDL_PROJECT_SOURCES ${SOURCE_DIR}/*.cpp)
 set(EXECUTABLE sdl_playmusic)
 
@@ -48,5 +49,5 @@ target_link_libraries(${EXECUTABLE} PUBLIC
                                             tag
 )
 target_include_directories(${EXECUTABLE} PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_DIR}
 )
