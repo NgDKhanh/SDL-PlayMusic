@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5.0)
 project(sdl_playmusic VERSION 0.1.0 LANGUAGES C CXX)
 
 if(NOT CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 17) # Default to C++14
+    set(CMAKE_CXX_STANDARD 17) # Default to C++17
 endif()
 
 set(CMAKE_BUILD_TYPE "Release")
@@ -22,8 +22,6 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_gfx REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
-# set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${project_SOURCE_DIR}/cmake")
-
 include_directories(
     include
     ${SDL2_INCLUDE_DIRS}
@@ -32,41 +30,23 @@ include_directories(
 )
 
 #Custom libraries
-# set(lib_names SDL2_First_Graphics)
-# add_library(SDL2_First_Graphics SHARED lib/mainClassSampleLib.cpp) #do not need header files in include
 
 #Add sub-modules
-# add_subdirectory(src/modules)
 
 #Setting sources code and executable names
 set(SOURCE_DIR src) 
-#set(SDL_PROJECT_SOURCES     
-#    ${SOURCE_DIR}/*.cpp
-#)
+
 file(GLOB SDL_PROJECT_SOURCES ${SOURCE_DIR}/*.cpp)
 set(EXECUTABLE sdl_playmusic)
 
 #add main executable
 add_executable(${EXECUTABLE} ${SDL_PROJECT_SOURCES} main/main.cpp)
 target_link_libraries(${EXECUTABLE} PUBLIC 
-                                            # ${SDL2_LIBRARIES} 
                                             SDL2::Main SDL2::Image 
                                             GL
                                             SDL2::Net SDL2::Mixer SDL2::TTF SDL2::GFX 
-                                            # ${SDL2_IMAGE_LIBRARIES}
-                                            # ${SDL2_TTF_LIBRARIES}
                                             tag
 )
 target_include_directories(${EXECUTABLE} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/inc
 )
-
-# Individual linking for each separate file
-# add_executable(health_bar_animation src/health_bar_animation.cpp)
-# target_link_libraries(health_bar_animation PUBLIC SDL2::Main SDL2::Image GL)
-# add_executable(mainClassSample src/mainClassSample.cpp)
-# target_link_libraries(mainClassSample PUBLIC SDL2::Main SDL2::Image GL ${lib_names})
-# target_include_directories(mainClassSample PUBLIC
-#     ${CMAKE_CURRENT_SOURCE_DIR}/include
-# )
-
