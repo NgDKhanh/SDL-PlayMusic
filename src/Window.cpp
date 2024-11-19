@@ -28,7 +28,8 @@ Window::Window(const char *title,
     title, x, y, w, h, flags
   ), SDL_DestroyWindow);
 
-  SDLWindowSurface = SDL_GetWindowSurface(SDLWindow.get()), SDL_FreeSurface;
+  // SDLWindowSurface = SDL_GetWindowSurface(SDLWindow.get()), SDL_FreeSurface;
+  SDLWindowSurface = SDL_GetWindowSurface(SDLWindow.get());
 
   SDL_FillRect(
     SDLWindowSurface,
@@ -91,7 +92,7 @@ void Window::ChangeWindowSize(int Amount)
   );
 }
 
-int Window::MoveRelative(int x, int y) 
+void Window::MoveRelative(int x, int y) 
 {
   int CurrentX; int CurrentY;
   SDL_GetWindowPosition(

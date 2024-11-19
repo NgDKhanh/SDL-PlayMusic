@@ -58,6 +58,10 @@
         "semaphore": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "filesystem": "cpp",
+        "codecvt": "cpp",
+        "iomanip": "cpp",
+        "sstream": "cpp"
     }
 }

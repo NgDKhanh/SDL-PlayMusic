@@ -30,7 +30,7 @@ public:
 
   void ChangeWindowSize(int Amount);
 
-  int MoveRelative(int x, int y);
+  void MoveRelative(int x, int y);
 
   int GetWindowWidth() const {
     return windowWidth;

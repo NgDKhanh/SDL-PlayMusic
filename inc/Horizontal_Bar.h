@@ -5,10 +5,10 @@
 #include "Texture.h"
 #include "Application.h"
 
-class Vertical_Bar : public LTexture
+class Horizontal_Bar : public LTexture
 {
 public:
-    Vertical_Bar(Application* App, const char* imagePath, int x, int y);
+    Horizontal_Bar(Application* App, const char* imagePath, int x, int y);
 
     void RenderToScreen(SDL_Renderer* renderer) override;
 
@@ -18,7 +18,7 @@ public:
             Value = value;
     }
 
-    int GetVertical_BarHeght() const
+    int GetHorizontal_BarHeght() const
     {
         return MaxValue;
     }
@@ -47,32 +47,32 @@ private:
         Rect.w = loadedSurface->w;
         Rect.h = loadedSurface->h;
 
-        RectFill.w = loadedSurface->w;
-        RectFill.h = Value;
+        RectFill.w = Value;
+        RectFill.h = loadedSurface->h;
 
         MinValue = 0;
-        MaxValue = loadedSurface->h;
+        MaxValue = loadedSurface->w;
 
         // Cleanup loaded surface
         SDL_FreeSurface(loadedSurface);
     }
 
-    void setPosition(int x = 50, int y = 50)
+    void setPosition(int x = 0, int y = 0)
     {
         Rect.x = x;
         Rect.y = y;
 
-        RectFill.x = x;
-        RectFill.y = Rect.y + (MaxValue - Value);
+        RectFill.x = 0;
+        RectFill.y = 0;
     }
 
     void Update()
     {
-        RectFill.h = Value; 
-        RectFill.y = Rect.y + (MaxValue - Value);
+        RectFill.h = Rect.x; 
+        RectFill.y = Value;
     }
 
-    int Value = 100;
+    int Value = 0;
     int MaxValue, MinValue;
     SDL_Rect Rect;
     SDL_Rect RectFill;

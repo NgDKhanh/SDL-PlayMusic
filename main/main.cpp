@@ -6,41 +6,9 @@
 #include "Application.h"
 #include "MusicList.h"
 #include "Vertical_Bar.h"
+#include "MusicManagement.h"
 #include <thread>
 #include <chrono>
-
-void pauseMusic()
-{
-  if (Mix_PlayingMusic() != 0)
-  {
-    //If the music is paused
-    if( Mix_PausedMusic() != 1 )
-    {
-      //Pause the music
-      Mix_PauseMusic();
-    }
-  }
-}
-
-int volume = 64;
-
-void volumeUp()
-{
-  if (volume <= 112)
-  {
-    volume += 16;
-    Mix_VolumeMusic(volume);
-  }
-}
-
-void volumeDown()
-{
-  if (volume >= 16)
-  {
-    volume -= 16;
-    Mix_VolumeMusic(volume);
-  }
-}
 
 int main() {
   /***************************    LOAD MUSIC     ***********************************/
@@ -52,8 +20,13 @@ int main() {
 
   //Load music
   MusicList musicList;
-  musicList.addSong("../music/vinhtuyBridge.mp3");
-  musicList.addSong("../music/gruppa-krovi.mp3");
+  // musicList.addSong("music/vinhtuyBridge.mp3");
+  // musicList.addSong("music/gruppa-krovi.mp3");
+
+  MusicManagement musicPlayer;
+  musicPlayer.addMusicList(musicList);
+  musicPlayer.addSongToList("music/vinhtuyBridge.mp3");
+  musicPlayer.addSongToList("music/gruppa-krovi.mp3");
 
   // Mix_VolumeMusic(volume);
 
@@ -70,24 +43,24 @@ int main() {
   }
   Layer UI;
 
-  Vertical_Bar VolumeVertical_Bar { &App, "../img/volume_bar.png", 
-                  (GameWindow.GetWindowWidth() / 2) + 250, (GameWindow.GetWindowHeight() / 2) - 80};
+  Vertical_Bar VolumeVertical_Bar { &App, "img/volume_bar.png", 
+                  (GameWindow.GetWindowWidth() / 2) + 250, (GameWindow.GetWindowHeight() / 2) - 80}; 
 
-  Button PlayButton { &App , "../img/play.png" , [&musicList]() { musicList.playSongList(); }, 
+  Button PlayButton { &App , "img/play.png" , [&musicPlayer]() { musicPlayer.playMusic(); }, 
                     (GameWindow.GetWindowWidth() / 2) - 50, GameWindow.GetWindowHeight() / 2};
-  Button PauseButton { &App , "../img/pause.png" , pauseMusic, 
+  Button PauseButton { &App , "img/pause.png" , [&musicPlayer]() { musicPlayer.pauseMusic(); }, 
                     (GameWindow.GetWindowWidth() / 2) + 50, GameWindow.GetWindowHeight() / 2};
-  Button VolumeDownButton { &App , "../img/volume_down.png" , [&VolumeVertical_Bar]() { volumeDown(); VolumeVertical_Bar.SetValue( int((float(volume) / 128) * VolumeVertical_Bar.GetVertical_BarHeght()) ); },
+  Button VolumeDownButton { &App , "img/volume_down.png" , [&VolumeVertical_Bar, &musicPlayer]() { musicPlayer.volumeDown(); VolumeVertical_Bar.SetValue( int((float(musicPlayer.getVolume()) / 128) * VolumeVertical_Bar.GetVertical_BarHeght()) ); },
                     (GameWindow.GetWindowWidth() / 2) + 235, (GameWindow.GetWindowHeight() / 2) + 135};
-  Button VolumeUpButton { &App , "../img/volume_up.png" , [&VolumeVertical_Bar]() { volumeUp(); VolumeVertical_Bar.SetValue( int((float(volume) / 128) * VolumeVertical_Bar.GetVertical_BarHeght()) ); },
+  Button VolumeUpButton { &App , "img/volume_up.png" , [&VolumeVertical_Bar, &musicPlayer]() { musicPlayer.volumeUp(); VolumeVertical_Bar.SetValue( int((float(musicPlayer.getVolume()) / 128) * VolumeVertical_Bar.GetVertical_BarHeght()) ); },
                     (GameWindow.GetWindowWidth() / 2) + 235, (GameWindow.GetWindowHeight() / 2) - 140};
-  Button PreviousTrackButton { &App , "../img/previous_track.png" , [&musicList]() { musicList.previousTrack(); }, 
+  Button PreviousTrackButton { &App , "img/previous_track.png" , [&musicPlayer]() { musicPlayer.previousSong(); }, 
                     (GameWindow.GetWindowWidth() / 2) - 50, (GameWindow.GetWindowHeight() / 2) + 60};                    
-  Button NextTrackButton { &App , "../img/next_track.png" , [&musicList]() { musicList.nextTrack(); }, 
+  Button NextTrackButton { &App , "img/next_track.png" , [&musicPlayer]() { musicPlayer.nextSong(); }, 
                     (GameWindow.GetWindowWidth() / 2) + 50, (GameWindow.GetWindowHeight() / 2) + 60};
-  Button AddMusicButton { &App , "../img/add.png" , [&musicList]() { musicList.addMusicMannual(); }, 
+  Button AddMusicButton { &App , "img/add.png" , [&musicPlayer]() { musicPlayer.addSongToListManual(); }, 
                     (GameWindow.GetWindowWidth() / 2) - 50, (GameWindow.GetWindowHeight() / 2) - 60};  
-  Button InfoButton { &App , "../img/info.png" , [&musicList]() { musicList.infoMetadata(); }, 
+  Button InfoButton { &App , "img/info.png" , [&musicPlayer]() { musicPlayer.infoMetadata(); }, 
                     (GameWindow.GetWindowWidth() / 2) + 50, (GameWindow.GetWindowHeight() / 2) - 60}; 
 
   UI.SubscribeToEvents(&PlayButton);
@@ -126,6 +99,7 @@ int main() {
     }
     App.RenderObjects();
     GameWindow.RenderFrame();
+    musicPlayer.Update();
   }
   Mix_CloseAudio();
 }
