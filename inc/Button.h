@@ -24,8 +24,7 @@ public:
   {
     func = f;
     setPosition(x, y);
-    LoadTexture(imagePath, App->GetRenderer());
-    // Update();
+    LoadTexture(imagePath, renderer);
   }
 
   Button(Application* App, const char* imagePath, std::function<void()> f, int x, int y) 

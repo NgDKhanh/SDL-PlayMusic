@@ -30,6 +30,7 @@ int main() {
   }
   //Load music
   MusicList musicList;
+
   // musicList.addSong("music/vinhtuyBridge.mp3");
   // musicList.addSong("music/gruppa-krovi.mp3");
 
@@ -95,9 +96,7 @@ int main() {
   App.SubscribeToRender(&PlayPauseButton);
   App.SubscribeToRender(&PlayModeButton);
 
-  SDL_SetRenderDrawColor( App.GetRenderer(), 0xFF, 0xFF, 0xFF, 0xFF );
-  SDL_RenderClear(App.GetRenderer());
-  SDL_RenderPresent(App.GetRenderer());
+  App.RenderObjects();
 
   SDL_Event Event;
   while(true) {
@@ -107,6 +106,7 @@ int main() {
         return 0;
       }
       if (UI.HandleEvent(&Event)) {
+        App.RenderObjects();
         continue;
       }
     }
