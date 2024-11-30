@@ -96,8 +96,6 @@ int main() {
   App.SubscribeToRender(&PlayPauseButton);
   App.SubscribeToRender(&PlayModeButton);
 
-  App.RenderObjects();
-
   SDL_Event Event;
   while(true) {
     while(SDL_PollEvent(&Event)) {
@@ -105,8 +103,7 @@ int main() {
         SDL_Quit();
         return 0;
       }
-      if (UI.HandleEvent(&Event)) {
-        App.RenderObjects();
+      else if (UI.HandleEvent(&Event)) {
         continue;
       }
     }
