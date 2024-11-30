@@ -2,13 +2,14 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <vector>
+#include <memory>
 #include "Window.h"
 #include "Texture.h"
 
 class Application {
 public:
   Application(Window* window) : mWindow { window } {
-    mRenderer = SDL_CreateRenderer(mWindow->GetSDLWindow(), -1, SDL_RENDERER_ACCELERATED);
+    mRenderer = std::shared_ptr<SDL_Renderer>(SDL_CreateRenderer(mWindow->GetSDLWindow(), -1, SDL_RENDERER_ACCELERATED), SDL_DestroyRenderer);
     if (mRenderer == nullptr) {
       // Handle renderer creation failure
       std::cerr << "Failed to create renderer! SDL Error: " << SDL_GetError() << std::endl;
@@ -16,7 +17,7 @@ public:
   }
 
   ~Application() {
-    SDL_DestroyRenderer(mRenderer);
+    // SDL_DestroyRenderer(mRenderer.get());
   }
 
   SDL_Surface* GetWindowSurface() const {
@@ -24,7 +25,7 @@ public:
   }
 
   SDL_Renderer* GetRenderer() const {
-    return mRenderer;
+    return mRenderer.get();
   }
 
   SDL_Window *GetWindow() const {
@@ -39,18 +40,18 @@ public:
   }
 
   void RenderObjects() {
-    SDL_SetRenderDrawColor( mRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-    SDL_RenderClear(mRenderer);
+    SDL_SetRenderDrawColor( mRenderer.get(), 0x00, 0xF0, 0x00, 0xFF );
+    SDL_RenderClear(mRenderer.get());
 
-    for (const auto Object : renderSubscribers) {
-      Object->RenderToScreen(mRenderer);
+    for (const auto &Object : renderSubscribers) {
+      Object->RenderToScreen(mRenderer.get());
     }
 
-    SDL_RenderPresent(mRenderer);
+    SDL_RenderPresent(mRenderer.get());
 }
 
 private:
   Window* mWindow;
-  SDL_Renderer* mRenderer;
+  std::shared_ptr<SDL_Renderer> mRenderer;
   std::vector<LTexture*> renderSubscribers;
 };

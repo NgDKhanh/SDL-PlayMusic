@@ -1,9 +1,9 @@
 #include "Layer.h"
 
 bool Layer::HandleEvent(const SDL_Event* Event) {
-    for (const auto Handler : Subscribers) {
+    for (const auto &Handler : Subscribers) {
         if (Handler->HandleEvent(Event)) {
-        return true;
+            return true;
         }
     }
     return false;

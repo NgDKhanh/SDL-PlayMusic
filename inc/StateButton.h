@@ -17,37 +17,57 @@
 #include <string>
 #include <functional>
 #include <memory>
+#include <map>
 
-class Button : public EventReceiver, public LTexture {
+class StateButton : public EventReceiver, public LTexture {
 public:
-  Button(Application* App, const char* imagePath, void (*f)(), int x, int y) 
+  // StateButton(Application* App, const int numberOfState, const char* imagePath[], void (*f[])(), int x, int y):
+  //    isClicked(true), mCurrentState(0)
+  // {
+  //   mNumberOfStates = numberOfState;
+  //   for (int i = 0; i < numberOfState; i++) {
+  //     mStateFunc.push_back(f[i]);
+  //     mStateTexturePath.push_back(imagePath[i]);
+  //   }
+  //   setPosition(x, y);
+
+  //   mApp = App;
+  //   // LoadTexture(imagePath[0], App->GetRenderer());
+  //   // Update();
+  // }
+
+  StateButton(Application* App, const int numberOfState, const char* imagePath[], std::function<void()> f[], int x, int y) :
+    isClicked(true), mCurrentState(0)
   {
-    func = f;
+    mNumberOfStates = numberOfState;
+    for (int i = 0; i < numberOfState; i++) {
+      if (f != nullptr) {
+        mStateFunc.push_back(f[i]);
+      }
+      mStateTexturePath.push_back(imagePath[i]);
+    }
     setPosition(x, y);
-    LoadTexture(imagePath, renderer);
+
+    mApp = App;
+    // LoadTexture(imagePath[0], App->GetRenderer());
   }
 
-  Button(Application* App, const char* imagePath, std::function<void()> f, int x, int y) 
-  {
-    func = f;
-    setPosition(x, y);
-    LoadTexture(imagePath, App->GetRenderer());
-  }
-
-  ~Button() {
+  ~StateButton() {
     // SDL_DestroyTexture(texture.get());
   }
 
-  void SetFunction(std::function<void()> f) {
-    func = f;
+  void SetState(const uint8_t state) {
+    mCurrentState = state;
+    isClicked = true;
+  }
+
+  void AddFunction(const std::function<void()> func) {
+    mStateFunc.push_back(func);
   }
 
   bool HandleEvent(const SDL_Event* Event) override;
 
-  void RenderToScreen(SDL_Renderer* renderer) override 
-  {
-    SDL_RenderCopy(renderer, texture.get(), nullptr, &Rect);
-  }
+  void RenderToScreen(SDL_Renderer* renderer) override;
 
 protected:
   void LoadTexture(const char* imagePath, SDL_Renderer* renderer) {
@@ -65,7 +85,7 @@ protected:
       return;
     }
 
-    // Set the button's dimensions to match the image size
+    // Set the StateButton's dimensions to match the image size
     Rect.w = loadedSurface->w;
     Rect.h = loadedSurface->h;
 
@@ -97,8 +117,19 @@ private:
     Rect.y = y;
   }
 
+  Application *mApp;
+
+  bool isClicked;
   bool isHovered { false };
   SDL_Rect Rect { 50, 50, 0, 0 }; // Width and height will be set based on the image size
   std::shared_ptr<SDL_Texture> texture { nullptr };
-  std::function<void()> func;
+  // std::function<void()> func;
+
+  uint8_t mNumberOfStates;
+  uint8_t mCurrentState;
+  // std::vector<std::string> mStateName; 
+  // std::map<std::string, std::function<void()>> mStateFunc;
+  // std::map<std::string, std::string> mStateTexturePath;
+  std::vector<std::function<void()>> mStateFunc;
+  std::vector<std::string> mStateTexturePath;
 };

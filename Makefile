@@ -31,5 +31,9 @@ clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
 .PHONY: run
-run: all
+run: 
 	./$(TARGET)
+
+.PHONY: debug
+debug:
+	gdb $(TARGET)

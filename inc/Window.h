@@ -2,6 +2,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <string>
+#include <memory>
 
 class Window {
 public:
@@ -14,6 +15,11 @@ public:
 
   Window(std::string title, Uint32 flags);
 
+  ~Window()
+  {
+    // SDL_FreeSurface(SDLWindowSurface);
+  }
+
   void RenderFrame();
 
   void Update();
@@ -24,7 +30,7 @@ public:
 
   void ChangeWindowSize(int Amount);
 
-  int MoveRelative(int x, int y);
+  void MoveRelative(int x, int y);
 
   int GetWindowWidth() const {
     return windowWidth;
@@ -39,24 +45,24 @@ public:
   }
 
   void GrabMouse() {
-    SDL_SetWindowMouseGrab(SDLWindow, SDL_TRUE);
+    SDL_SetWindowMouseGrab(SDLWindow.get(), SDL_TRUE);
   }
 
   void FreeMouse() {
-    SDL_SetWindowMouseGrab(SDLWindow, SDL_FALSE);
+    SDL_SetWindowMouseGrab(SDLWindow.get(), SDL_FALSE);
   }
 
   SDL_Window* GetSDLWindow() const
   {
-    return SDLWindow;
+    return SDLWindow.get();
   }
 
 private:
-  SDL_Window* SDLWindow { nullptr };
+  std::shared_ptr<SDL_Window> SDLWindow { nullptr };
   SDL_Surface* SDLWindowSurface { nullptr };
 
-  int windowWidth { 640 };
-  int windowHeight { 480 };
+  int windowWidth { 960 };
+  int windowHeight { 678 };
 
   int bgRed { 40 };
   int bgGreen { 40 };

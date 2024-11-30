@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <SDL2/SDL.h>
+#include <memory>
 #include "EventReceiver.h"
 
 class Layer {
