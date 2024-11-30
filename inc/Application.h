@@ -40,7 +40,7 @@ public:
   }
 
   void RenderObjects() {
-    SDL_SetRenderDrawColor( mRenderer.get(), 0xFF, 0xFF, 0xFF, 0xFF );
+    SDL_SetRenderDrawColor( mRenderer.get(), 0x00, 0xF0, 0x00, 0xFF );
     SDL_RenderClear(mRenderer.get());
 
     for (const auto &Object : renderSubscribers) {

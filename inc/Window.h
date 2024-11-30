@@ -61,8 +61,8 @@ private:
   std::shared_ptr<SDL_Window> SDLWindow { nullptr };
   SDL_Surface* SDLWindowSurface { nullptr };
 
-  int windowWidth { 640 };
-  int windowHeight { 480 };
+  int windowWidth { 960 };
+  int windowHeight { 678 };
 
   int bgRed { 40 };
   int bgGreen { 40 };

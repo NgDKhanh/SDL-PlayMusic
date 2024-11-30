@@ -9,6 +9,7 @@ void MusicManagement::pauseMusic()
         {
             //Pause the music
             Mix_PauseMusic();
+            mIsPlaying = false;
         }
     }
 }
@@ -16,19 +17,24 @@ void MusicManagement::pauseMusic()
 void MusicManagement::playMusic()
 {
     (*mCurrentMusicList).playSongList();
+    mIsPlaying = true;
     mIsPlayed = true;
 }
 
 void MusicManagement::nextSong()
 {
     (*mCurrentMusicList).nextSong();
+    mIsPlaying = true;
     mIsPlayed = true;
+    mediator_->Notify(this, "nextSong");
 }
 
 void MusicManagement::previousSong()
 {
     (*mCurrentMusicList).previousSong();
+    mIsPlaying = true;
     mIsPlayed = true;
+    mediator_->Notify(this, "previousSong");
 }
 
 void MusicManagement::volumeUp()
@@ -70,13 +76,22 @@ void MusicManagement::addSongToListManual()
 
 void MusicManagement::Update()
 {
-    //If the music is not play done
+    //If the music is play done
     if (Mix_PlayingMusic() == 0 && mIsPlayed == true)
     {
-        //If the music is not paused
-        if( Mix_PausedMusic() != 1 )
-        {
-            (*mCurrentMusicList).nextSong();
+        if (mPlayMode == 0) {
+            //If the music is not paused
+            if( Mix_PausedMusic() != 1 )
+            {
+                (*mCurrentMusicList).nextSong();
+            }
+        }
+        else if (mPlayMode == 1) {
+            //If the music is not paused
+            if( Mix_PausedMusic() != 1 )
+            {
+                (*mCurrentMusicList).playSongList();
+            }
         }
     }
 }

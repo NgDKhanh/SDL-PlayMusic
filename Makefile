@@ -33,3 +33,7 @@ clean:
 .PHONY: run
 run: 
 	./$(TARGET)
+
+.PHONY: debug
+debug:
+	gdb $(TARGET)
