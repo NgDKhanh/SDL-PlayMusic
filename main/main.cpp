@@ -11,6 +11,7 @@
 #include "Background.h"
 #include "PlayPauseButton.h"
 #include "MusicController.h"
+#include "Text.h"
 #include <thread>
 #include <chrono>
 
@@ -26,6 +27,11 @@ int main() {
   if( !( IMG_Init( imgFlags ) & imgFlags ) )
   {
     printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+    return -1;
+  }
+
+  if (TTF_Init() < 0) {
+    printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
     return -1;
   }
   //Load music
@@ -49,7 +55,7 @@ int main() {
   Background Background { &App, "img/background.png" };
 
   Vertical_Bar VolumeVertical_Bar { &App, "img/volume_bar.png", 
-                  (GameWindow.GetWindowWidth() / 2) + 250, (GameWindow.GetWindowHeight() / 2) - 80}; 
+                  GameWindow.GetWindowWidth() - 75, (GameWindow.GetWindowHeight() / 2) - 80}; 
 
   const char* PlayModeButtonTexturePaths[2] = {"img/general_loop.png", "img/single_loop.png"}; 
   std::function<void()> PlayModeButtonFunctions[2] = {[&musicPlayer]() { musicPlayer.setPlayMode(1); }, [&musicPlayer]() { musicPlayer.setPlayMode(0); }};
@@ -61,12 +67,15 @@ int main() {
   PlayPauseButton PlayPauseButton { &App, nullptr, 2, PlayPauseButtonTexturePaths, (GameWindow.GetWindowWidth() / 2), GameWindow.GetWindowHeight() / 2};
   PlayPauseButton.Init();
 
-  MusicController MusicControl { &PlayPauseButton, &musicPlayer };
+  SongTitle Title { &App, nullptr, ((GameWindow.GetWindowWidth() / 2) + 25), ((GameWindow.GetWindowHeight() / 2) + 200)};
+  SongTitle Artist { &App, nullptr, ((GameWindow.GetWindowWidth() / 2) + 25), ((GameWindow.GetWindowHeight() / 2) + 250), 18};
+
+  MusicController MusicControl { &PlayPauseButton, &Title, &Artist, &musicPlayer };
 
   Button VolumeDownButton { &App , "img/volume_down.png" , [&VolumeVertical_Bar, &musicPlayer]() { musicPlayer.volumeDown(); VolumeVertical_Bar.SetValue( int((float(musicPlayer.getVolume()) / 128) * VolumeVertical_Bar.GetVertical_BarHeght()) ); },
-                    (GameWindow.GetWindowWidth() / 2) + 235, (GameWindow.GetWindowHeight() / 2) + 135};
+                    GameWindow.GetWindowWidth() - 90, (GameWindow.GetWindowHeight() / 2) + 135};
   Button VolumeUpButton { &App , "img/volume_up.png" , [&VolumeVertical_Bar, &musicPlayer]() { musicPlayer.volumeUp(); VolumeVertical_Bar.SetValue( int((float(musicPlayer.getVolume()) / 128) * VolumeVertical_Bar.GetVertical_BarHeght()) ); },
-                    (GameWindow.GetWindowWidth() / 2) + 235, (GameWindow.GetWindowHeight() / 2) - 140};
+                    GameWindow.GetWindowWidth() - 90, (GameWindow.GetWindowHeight() / 2) - 140};
   Button PreviousTrackButton { &App , "img/previous_track.png" , [&musicPlayer]() { musicPlayer.previousSong(); }, 
                     (GameWindow.GetWindowWidth() / 2) - 100, (GameWindow.GetWindowHeight() / 2)};                    
   Button NextTrackButton { &App , "img/next_track.png" , [&musicPlayer]() { musicPlayer.nextSong(); }, 
@@ -75,6 +84,12 @@ int main() {
                     (GameWindow.GetWindowWidth() / 2) - 50, (GameWindow.GetWindowHeight() / 2) - 60};  
   Button InfoButton { &App , "img/info.png" , [&musicPlayer]() { musicPlayer.infoMetadata(); }, 
                     (GameWindow.GetWindowWidth() / 2) + 50, (GameWindow.GetWindowHeight() / 2) - 60}; 
+  Button Forward_10Seconds { &App , "img/forward_ten.png" , [&musicPlayer]() { musicPlayer.jumpForwardSeconds(10); }, 
+                    (GameWindow.GetWindowWidth() / 2) + 200, (GameWindow.GetWindowHeight() / 2)};
+  Button Backward_10Seconds { &App , "img/backward_ten.png" , [&musicPlayer]() { musicPlayer.jumpBackwardSeconds(10); }, 
+                    (GameWindow.GetWindowWidth() / 2) -200, (GameWindow.GetWindowHeight() / 2)};
+
+  // Text Title { &App, "Hello SDL", (GameWindow.GetWindowWidth() / 2), ((GameWindow.GetWindowHeight() / 2) + 250)};
 
   UI.SubscribeToEvents(&VolumeUpButton);
   UI.SubscribeToEvents(&VolumeDownButton);
@@ -84,6 +99,8 @@ int main() {
   UI.SubscribeToEvents(&InfoButton);
   UI.SubscribeToEvents(&PlayPauseButton);
   UI.SubscribeToEvents(&PlayModeButton);
+  UI.SubscribeToEvents(&Forward_10Seconds);
+  UI.SubscribeToEvents(&Backward_10Seconds);
 
   App.SubscribeToRender(&Background);
   App.SubscribeToRender(&VolumeUpButton);
@@ -95,11 +112,18 @@ int main() {
   App.SubscribeToRender(&VolumeVertical_Bar);
   App.SubscribeToRender(&PlayPauseButton);
   App.SubscribeToRender(&PlayModeButton);
+  App.SubscribeToRender(&Forward_10Seconds);
+  App.SubscribeToRender(&Backward_10Seconds);
+  App.SubscribeToRender(&Title);
+  App.SubscribeToRender(&Artist);
 
   SDL_Event Event;
   while(true) {
     while(SDL_PollEvent(&Event)) {
       if (Event.type == SDL_QUIT) {
+        // TTF_Quit();
+        // IMG_Quit();
+        // Mix_CloseAudio();
         SDL_Quit();
         return 0;
       }
@@ -111,5 +135,4 @@ int main() {
     GameWindow.RenderFrame();
     musicPlayer.Update();
   }
-  Mix_CloseAudio();
 }

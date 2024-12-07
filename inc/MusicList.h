@@ -4,6 +4,7 @@
 #include <list>
 #include <memory>
 #include "sys/stat.h"
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include "Song.h"
 
@@ -12,14 +13,18 @@ class MusicList
 public:
   MusicList(): 
     mMusicListName("default"),
-    currentPlayingSong{listSong.begin()}
+    currentPlayingSong{listSong.begin()},
+    mStartPlayTime(0),
+    mOffsetTime(0)
   {
 
   } 
 
   MusicList(std::string name): 
     mMusicListName(name),
-    currentPlayingSong{listSong.begin()}
+    currentPlayingSong{listSong.begin()},
+    mStartPlayTime(0),
+    mOffsetTime(0)
   {
 
   } 
@@ -28,7 +33,9 @@ public:
 
   void addMusicMannual();
 
-  void playSongList();
+  void playSong();
+
+  void pauseSong();
 
   void nextSong();
 
@@ -42,8 +49,18 @@ public:
 
   const std::string getMusicListName() { return mMusicListName; }
 
+  const SongMetadata getSongMetadata() { return currentPlayingSong->getMetadata(); }
+
+  const double getCurrentSongPlayPosition() { return ((double)mOffsetTime + (SDL_GetTicks() - mStartPlayTime) / 1000.0); }
+
+  void jumpForward(uint32_t seconds);
+
+  void jumpBackward(uint32_t seconds);
+
 private:
   std::string mMusicListName;
   std::list<Song> listSong;
   std::list<Song>::iterator currentPlayingSong;
+  uint32_t mStartPlayTime;
+  uint32_t mOffsetTime;
 };
