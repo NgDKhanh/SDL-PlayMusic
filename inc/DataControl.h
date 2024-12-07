@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <memory>
 
 class BaseComponent;
 
@@ -13,7 +14,7 @@ public:
 
 class BaseComponent {
 protected:
-    Mediator *mediator_;
+    Mediator* mediator_;
 public:
     BaseComponent(Mediator *mediator = nullptr) : mediator_(mediator) {}
 

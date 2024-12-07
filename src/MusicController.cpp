@@ -10,4 +10,22 @@ void MusicController::Notify(BaseComponent *sender, std::string event) const {
     else if (event == "nextSong" || event == "previousSong") {
         this->mPlayPauseButton->SetState(PlayPauseButton::PlayingMode::PAUSE);
     }
+    else if (event.find("SongName") == 0) {
+        size_t pos = event.find(':');
+
+        if (pos != std::string::npos) {
+            std::string SongName = event.substr(pos+1);
+
+            mSongTitle->SetText(SongName);
+        }
+    }
+    else if (event.find("Artist") == 0) {
+        size_t pos = event.find(':');
+
+        if (pos != std::string::npos) {
+            std::string Artist = event.substr(pos+1);
+
+            mArtist->SetText(Artist);
+        }
+    }
 }

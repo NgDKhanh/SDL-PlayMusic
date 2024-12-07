@@ -29,7 +29,7 @@ void Song::loadMusic(const std::string &path)
     fileRef = tempRef;
 }
 
-void Song::getMetadata()
+void Song::printMetadata()
 {
     if (fileRef.isNull()) {
         std::cerr << "Error opening file." << std::endl;
@@ -53,4 +53,32 @@ void Song::getMetadata()
         std::cout << "Channels: " << properties->channels() << std::endl;
         std::cout << "_____________________________________________________"<< std::endl;
     }
+}
+
+const SongMetadata Song::getMetadata()
+{
+    SongMetadata metadata;
+    if (fileRef.isNull()) {
+        std::cerr << "Error opening file." << std::endl;
+    }
+    else
+    {
+        // Get the Tag (metadata) of the file
+        TagLib::Tag* tag = fileRef.tag();
+
+        // Display some metadata information
+         metadata.Title =  tag->title().toCString(true);
+         metadata.Artist = tag->artist().toCString(true);
+         metadata.Album = tag->album().toCString(true);
+         metadata.Year = tag->year();
+         metadata.Track = tag->track();
+
+        TagLib::AudioProperties *properties = fileRef.audioProperties();
+
+        metadata.Bitrate = properties->bitrate();
+        metadata.Length = properties->lengthInSeconds();
+        metadata.Chanel = properties->channels();
+
+    }
+    return metadata;
 }

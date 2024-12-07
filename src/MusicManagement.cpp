@@ -2,21 +2,13 @@
 
 void MusicManagement::pauseMusic() 
 {
-    if (Mix_PlayingMusic() != 0)
-    {
-        //If the music is paused
-        if( Mix_PausedMusic() != 1 )
-        {
-            //Pause the music
-            Mix_PauseMusic();
-            mIsPlaying = false;
-        }
-    }
+    (*mCurrentMusicList).pauseSong();
+    mIsPlaying = false;
 }
 
 void MusicManagement::playMusic()
 {
-    (*mCurrentMusicList).playSongList();
+    (*mCurrentMusicList).playSong();
     mIsPlaying = true;
     mIsPlayed = true;
 }
@@ -27,6 +19,8 @@ void MusicManagement::nextSong()
     mIsPlaying = true;
     mIsPlayed = true;
     mediator_->Notify(this, "nextSong");
+    mediator_->Notify(this, "SongName:" + (*mCurrentMusicList).getSongMetadata().Title);
+    mediator_->Notify(this, "Artist:" + (*mCurrentMusicList).getSongMetadata().Artist);
 }
 
 void MusicManagement::previousSong()
@@ -35,6 +29,18 @@ void MusicManagement::previousSong()
     mIsPlaying = true;
     mIsPlayed = true;
     mediator_->Notify(this, "previousSong");
+    mediator_->Notify(this, "SongName:" + (*mCurrentMusicList).getSongMetadata().Title);
+    mediator_->Notify(this, "Artist:" + (*mCurrentMusicList).getSongMetadata().Artist);
+}
+
+void MusicManagement::jumpForwardSeconds(uint32_t seconds)
+{
+    (*mCurrentMusicList).jumpForward(seconds);
+}
+
+void MusicManagement::jumpBackwardSeconds(uint32_t seconds)
+{
+    (*mCurrentMusicList).jumpBackward(seconds);
 }
 
 void MusicManagement::volumeUp()
@@ -76,6 +82,12 @@ void MusicManagement::addSongToListManual()
 
 void MusicManagement::Update()
 {
+    if (!mFirstUpdate) {
+        // Send info about initial metadata of music to UI components
+        mediator_->Notify(this, "SongName:" + (*mCurrentMusicList).getSongMetadata().Title);
+        mediator_->Notify(this, "Artist:" + (*mCurrentMusicList).getSongMetadata().Artist);
+        mFirstUpdate = true;
+    }
     //If the music is play done
     if (Mix_PlayingMusic() == 0 && mIsPlayed == true)
     {
@@ -83,14 +95,14 @@ void MusicManagement::Update()
             //If the music is not paused
             if( Mix_PausedMusic() != 1 )
             {
-                (*mCurrentMusicList).nextSong();
+                nextSong();
             }
         }
         else if (mPlayMode == 1) {
             //If the music is not paused
             if( Mix_PausedMusic() != 1 )
             {
-                (*mCurrentMusicList).playSongList();
+                (*mCurrentMusicList).playSong();
             }
         }
     }

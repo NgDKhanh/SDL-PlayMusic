@@ -14,7 +14,7 @@ TARGET := $(BIN_DIR)/main
 all: directories $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CC) -o $@ $? -lSDL2 -lSDL2_image -lSDL2_mixer -pthread -ltag
+	$(CC) -o $@ $? -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -pthread -ltag
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp 
 	$(CC) $(CPPFLAG) -c -o $@ $< -I$(INC_DIR)

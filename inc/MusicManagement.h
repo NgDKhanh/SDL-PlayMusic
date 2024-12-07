@@ -7,11 +7,13 @@
 #include <SDL2/SDL_mixer.h>
 #include "MusicList.h"
 #include "DataControl.h"
+#include <chrono>
 
 class MusicManagement : public BaseComponent
 {
 public:
     MusicManagement(): 
+        mFirstUpdate(false),
         mIsPlaying(false),
         mIsPlayed(false),
         mPlayMode(0),
@@ -30,6 +32,10 @@ public:
     void nextSong();
 
     void previousSong();
+
+    void jumpForwardSeconds(uint32_t seconds);
+
+    void jumpBackwardSeconds(uint32_t seconds);
 
     void volumeUp();
 
@@ -54,6 +60,7 @@ public:
     void Update();
 
 private:
+    bool mFirstUpdate;
     bool mIsPlaying;
     bool mIsPlayed;
     uint8_t mPlayMode;

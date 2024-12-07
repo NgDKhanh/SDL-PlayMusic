@@ -7,6 +7,18 @@
 #include <taglib/taglib.h>
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
+#include <chrono>
+
+struct SongMetadata {
+    std::string Title;
+    std::string Artist;
+    std::string Album;
+    unsigned int Year;
+    unsigned int Track;
+    int Bitrate;
+    int Chanel;
+    int Length;
+};
 
 class Song
 {
@@ -20,7 +32,9 @@ public:
         return this->music.get();
     }
 
-    void getMetadata();
+    void printMetadata();
+
+    const SongMetadata getMetadata();
 
 private:
     TagLib::FileRef fileRef;
