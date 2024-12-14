@@ -28,4 +28,13 @@ void MusicController::Notify(BaseComponent *sender, std::string event) const {
             mArtist->SetText(Artist);
         }
     }
+    else if (event.find("Time" == 0)) {
+        size_t pos = event.find(':');
+
+        if (pos != std::string::npos) {
+            double currentTimeRatio = std::stod(event.substr(pos+1));
+
+            mTimeBar->SetRatio(currentTimeRatio);
+        }
+    }
 }

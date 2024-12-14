@@ -49,7 +49,7 @@ void Song::printMetadata()
 
         TagLib::AudioProperties *properties = fileRef.audioProperties();
         std::cout << "Bitrate: " << properties->bitrate() << std::endl;
-        std::cout << "Length: " << properties->lengthInSeconds()/60.0f << " min" << std::endl;
+        std::cout << "Length: " << properties->lengthInSeconds()/60 << "min " << properties->lengthInSeconds()%60 << "s" << std::endl;
         std::cout << "Channels: " << properties->channels() << std::endl;
         std::cout << "_____________________________________________________"<< std::endl;
     }

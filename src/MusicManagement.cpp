@@ -45,18 +45,18 @@ void MusicManagement::jumpBackwardSeconds(uint32_t seconds)
 
 void MusicManagement::volumeUp()
 {
-    if (mVolume <= 112)
+    if (mVolume <= 120)
     {
-        mVolume += 16;
+        mVolume += 8;
         Mix_VolumeMusic(mVolume);
     }
 }
 
 void MusicManagement::volumeDown()
 {
-    if (mVolume >= 16)
+    if (mVolume >= 8)
     {
-        mVolume -= 16;
+        mVolume -= 8;
         Mix_VolumeMusic(mVolume);
     }
 }
@@ -80,6 +80,15 @@ void MusicManagement::addSongToListManual()
     (*mCurrentMusicList).addMusicMannual();
 }
 
+void MusicManagement::removeSongFromList()
+{
+    std::string index;
+    (*mCurrentMusicList).printList();
+    std::cout << "Enter song index that you want to remove (except current song): ";
+    std::cin >> index;
+    (*mCurrentMusicList).removeSong(atoi(index.c_str()));
+}
+
 void MusicManagement::Update()
 {
     if (!mFirstUpdate) {
@@ -88,6 +97,12 @@ void MusicManagement::Update()
         mediator_->Notify(this, "Artist:" + (*mCurrentMusicList).getSongMetadata().Artist);
         mFirstUpdate = true;
     }
+
+    if (Mix_PlayingMusic() == 1) 
+    {
+        mediator_->Notify(this, "Time: " + std::to_string((*mCurrentMusicList).getCurrentSongPlayPosition() /  (double)(*mCurrentMusicList).getSongMetadata().Length));
+    }
+
     //If the music is play done
     if (Mix_PlayingMusic() == 0 && mIsPlayed == true)
     {
@@ -111,4 +126,9 @@ void MusicManagement::Update()
 void MusicManagement::infoMetadata()
 {
     (*mCurrentMusicList).infoMetadata();
+}
+
+void MusicManagement::printList() 
+{
+    (*mCurrentMusicList).printList();
 }

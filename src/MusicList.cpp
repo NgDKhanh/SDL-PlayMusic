@@ -34,6 +34,19 @@ void MusicList::addMusicMannual()
     addSong(path);
 }
 
+void MusicList::removeSong(const uint8_t songIndex)
+{
+    if (listSong.empty() || songIndex > listSong.size()) 
+    {
+        std::cout << "Invalid remove song." << std::endl;
+        return;
+    }
+
+    auto it = listSong.begin();
+    std::advance(it, (songIndex-1));
+    listSong.erase(it);
+}
+
 void MusicList::playSong()
 {
     if (!listSong.empty()) {
@@ -47,7 +60,7 @@ void MusicList::playSong()
             //Play the music
             Mix_PlayMusic( (*currentPlayingSong).getMusic(), 0 );
             mStartPlayTime = SDL_GetTicks();
-            mOffsetTime = 0;
+            mOffsetTime = 0.0;
         }
         else
         {
@@ -75,7 +88,7 @@ void MusicList::pauseSong()
         {
             //Pause the music
             Mix_PauseMusic();
-            mOffsetTime += (SDL_GetTicks() - mStartPlayTime) / 1000.0;
+            mOffsetTime += ((double)(SDL_GetTicks() - mStartPlayTime) / 1000.0);
         }
     }
 }
@@ -97,7 +110,7 @@ void MusicList::nextSong()
         //Play the music
         Mix_PlayMusic( (*currentPlayingSong).getMusic(), 0 );
         mStartPlayTime = SDL_GetTicks();
-        mOffsetTime = 0;
+        mOffsetTime = 0.0;
     } 
     else 
     {
@@ -124,7 +137,7 @@ void MusicList::previousSong()
         //Play the music
         Mix_PlayMusic( (*currentPlayingSong).getMusic(), 0 );
         mStartPlayTime = SDL_GetTicks();
-        mOffsetTime = 0;
+        mOffsetTime = 0.0;
     } 
     else 
     {
@@ -142,7 +155,7 @@ void MusicList::jumpBackward(uint32_t seconds)
     else {
         targetTime = 1.0;
     }
-    mOffsetTime = (uint32_t)targetTime;
+    mOffsetTime = targetTime;
     mStartPlayTime = SDL_GetTicks();
     Mix_SetMusicPosition(targetTime);
 }
@@ -159,7 +172,7 @@ void MusicList::jumpForward(uint32_t seconds)
         // So I add offset 7s                                                                                    
         targetTime = (double)(*currentPlayingSong).getMetadata().Length - 1.0 + (7.0); 
     }
-    mOffsetTime = (uint32_t)targetTime;
+    mOffsetTime = targetTime;
     mStartPlayTime = SDL_GetTicks();
     Mix_SetMusicPosition(targetTime);
 }
@@ -172,4 +185,36 @@ void MusicList::infoMetadata()
 void MusicList::modifyMetadata()
 {
     
+}
+
+void MusicList::printList()
+{
+    int index = 1;
+    std::cout << "_____________________________________________________"<< std::endl;
+    std::cout << "              " << mMusicListName << "              " << std::endl;
+    std::cout << "_____________________________________________________"<< std::endl;
+    for (auto Song : listSong) {
+        if (Song.getMetadata().Title == (*currentPlayingSong).getMetadata().Title) 
+        {
+            std::cout << "|-->";
+        }
+        else 
+        {
+            std::cout << "    ";
+        }
+        std::cout << index << ". " << Song.getMetadata().Title << " (" << Song.getMetadata().Artist << ")";
+        std::cout << std::endl;
+        index++;
+    }
+    std::cout << "_____________________________________________________"<< std::endl;
+}
+
+const double MusicList::getCurrentSongPlayPosition() { 
+    if ( Mix_PausedMusic() != 1 && Mix_PlayingMusic() == 1)
+    {
+        return (mOffsetTime + (SDL_GetTicks() - mStartPlayTime) / 1000.0); 
+    }
+    else {
+        return (mOffsetTime);
+    }
 }
