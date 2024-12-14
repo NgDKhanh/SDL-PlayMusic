@@ -15,7 +15,7 @@ public:
     mMusicListName("default"),
     currentPlayingSong{listSong.begin()},
     mStartPlayTime(0),
-    mOffsetTime(0)
+    mOffsetTime(0.0)
   {
 
   } 
@@ -24,7 +24,7 @@ public:
     mMusicListName(name),
     currentPlayingSong{listSong.begin()},
     mStartPlayTime(0),
-    mOffsetTime(0)
+    mOffsetTime(0.0)
   {
 
   } 
@@ -32,6 +32,8 @@ public:
   void addSong(const std::string& path);
 
   void addMusicMannual();
+
+  void removeSong(const uint8_t songIndex);
 
   void playSong();
 
@@ -51,16 +53,18 @@ public:
 
   const SongMetadata getSongMetadata() { return currentPlayingSong->getMetadata(); }
 
-  const double getCurrentSongPlayPosition() { return ((double)mOffsetTime + (SDL_GetTicks() - mStartPlayTime) / 1000.0); }
+  const double getCurrentSongPlayPosition();
 
   void jumpForward(uint32_t seconds);
 
   void jumpBackward(uint32_t seconds);
+
+  void printList();
 
 private:
   std::string mMusicListName;
   std::list<Song> listSong;
   std::list<Song>::iterator currentPlayingSong;
   uint32_t mStartPlayTime;
-  uint32_t mOffsetTime;
+  double mOffsetTime;
 };
