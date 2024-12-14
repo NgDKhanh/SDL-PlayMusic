@@ -3,6 +3,7 @@
 #include <iostream>
 #include <list>
 #include <memory>
+#include <string>
 #include "sys/stat.h"
 #include <SDL2/SDL_mixer.h>
 #include "MusicList.h"
@@ -49,6 +50,8 @@ public:
 
     void addSongToListManual();
 
+    void removeSongFromList();
+
     static void playDoneCallBack();
 
     bool getIsPlaying() { return mIsPlaying; }
@@ -57,7 +60,17 @@ public:
 
     void infoMetadata();
 
+    void printList();
+
     void Update();
+
+    static int AddSongToListManualWrapper(void* data) {
+        MusicManagement* musicManagement = static_cast<MusicManagement*>(data);
+
+        musicManagement->addSongToListManual();
+
+        return 0;
+    }
 
 private:
     bool mFirstUpdate;
@@ -68,3 +81,4 @@ private:
     std::list<MusicList> mMusicLists;
     std::list<MusicList>::iterator mCurrentMusicList;
 };
+

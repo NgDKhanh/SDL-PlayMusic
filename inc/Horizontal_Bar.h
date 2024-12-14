@@ -18,6 +18,19 @@ public:
             Value = value;
     }
 
+    void SetRatio(double ratio)
+    {
+        if (ratio >= 0.0 && ratio <= 1.0) {
+            Value = (int)(ratio * (double)MaxValue);
+        }
+        else if (ratio > 1.0) {
+            Value = MaxValue;
+        }
+        else if (ratio < 0) {
+            Value = 0;
+        }
+    }
+
     int GetHorizontal_BarHeght() const
     {
         return MaxValue;
@@ -62,14 +75,13 @@ private:
         Rect.x = x;
         Rect.y = y;
 
-        RectFill.x = 0;
-        RectFill.y = 0;
+        RectFill.x = x;
+        RectFill.y = y;
     }
 
     void Update()
     {
-        RectFill.h = Rect.x; 
-        RectFill.y = Value;
+        RectFill.w = Value;
     }
 
     int Value = 0;
