@@ -59,6 +59,8 @@ int main() {
   Application App { &GameWindow };
   Layer UI;
 
+  bool AddSongPopUp = false;
+
   Background Background { &App, "../img/background.png" };
 
   Vertical_Bar VolumeVertical_Bar { &App, "../img/volume_bar.png", 
@@ -91,18 +93,7 @@ int main() {
   Button NextTrackButton { &App , "../img/next_track.png" , [&musicPlayer]() { musicPlayer.nextSong(); }, 
                     (GameWindow.GetWindowWidth() / 2) + 100, (GameWindow.GetWindowHeight() / 2)};
   // Button AddMusicButton { &App , "../img/add.png" , [&musicPlayer]() { SDL_CreateThread(MusicManagement::AddSongToListManualWrapper, "AddSongThread", static_cast<void*>(&musicPlayer)); }, 
-  Button AddMusicButton { &App , "../img/add.png" , [&musicPlayer, &App, &GameWindow]() 
-                                                    {
-                                                      PopUpBox AddMusicBox(&App, PopUpBox::POP_UP_BOX_KIND::INPUT,
-                                                                            GameWindow.GetWindowWidth(), GameWindow.GetWindowHeight());
-                                                      std::string path = AddMusicBox.showPopUp("Enter song's path");
-                                                      if (path != "Default" && path != " ") {
-                                                        musicPlayer.addSongToList(path);
-                                                      }
-                                                      else {
-                                                        std::cout << "Cancel";
-                                                      }
-                                                    }, 
+  Button AddMusicButton { &App , "../img/add.png" , [&AddSongPopUp]() { AddSongPopUp = true; }, 
                     (GameWindow.GetWindowWidth() / 2) + 100, (GameWindow.GetWindowHeight() / 2) - 60};  
   Button RemoveMusicButton { &App , "../img/minus.png" , [&musicPlayer]() { musicPlayer.removeSongFromList(); }, 
                     (GameWindow.GetWindowWidth() / 2) - 100, (GameWindow.GetWindowHeight() / 2) - 60};
@@ -160,6 +151,26 @@ int main() {
         else if (UI.HandleEvent(&Event)) {
             continue;
         }
+    }
+
+    if (AddSongPopUp == true) {
+      PopUpBox AddMusicBox(&App, PopUpBox::POP_UP_BOX_KIND::INPUT,
+                            GameWindow.GetWindowWidth(), GameWindow.GetWindowHeight());
+      std::string path = AddMusicBox.showPopUp("Enter song's path");
+      PopUpBox AddMusicResultBox(&App, PopUpBox::POP_UP_BOX_KIND::INFO,
+                            GameWindow.GetWindowWidth(), GameWindow.GetWindowHeight());
+      if (path != "Default" && path != " ") {
+        if (musicPlayer.addSongToList(path)) {
+          AddMusicResultBox.showPopUp("Add song OK");
+        }
+        else {
+          AddMusicResultBox.showPopUp("Add song fail");
+        }
+      }
+      else {
+        std::cout << "Cancel" << std::endl;
+      }
+      AddSongPopUp = false;
     }
 
     // Update objects, render, and handle music

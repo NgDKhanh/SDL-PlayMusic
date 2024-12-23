@@ -70,9 +70,9 @@ void MusicManagement::addMusicList(const MusicList& MusicList)
     }
 }
 
-void MusicManagement::addSongToList(const std::string& path)
+bool MusicManagement::addSongToList(const std::string& path)
 {
-    (*mCurrentMusicList).addSong(path);
+    return (*mCurrentMusicList).addSong(path);
 }
 
 void MusicManagement::addSongToListManual()

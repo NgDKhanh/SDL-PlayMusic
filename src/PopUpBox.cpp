@@ -4,8 +4,10 @@ std::string PopUpBox::showPopUp(std::string message) {
     bool popupActive = true;
 
     while (popupActive) {
+        GetFrameStart(SDL_GetTicks());
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
+
             if (event.type == SDL_QUIT) {
                 popupActive = false;
                 break;
@@ -53,33 +55,37 @@ std::string PopUpBox::showPopUp(std::string message) {
         // Draw the message text
         renderText(message, popupX + 20, popupY + 20, textColor);
 
-        // Draw the text box
-        SDL_SetRenderDrawColor(mApp->GetRenderer(), textBoxColor.r, textBoxColor.g, textBoxColor.b, textBoxColor.a);
-        SDL_RenderFillRect(mApp->GetRenderer(), &textBoxRect);
-        SDL_SetRenderDrawColor(mApp->GetRenderer(), textBoxBorderColor.r, textBoxBorderColor.g, textBoxBorderColor.b, textBoxBorderColor.a);
-        SDL_RenderDrawRect(mApp->GetRenderer(), &textBoxRect);
+        if (mKind == POP_UP_BOX_KIND::INPUT) {
+            // Draw the text box
+            SDL_SetRenderDrawColor(mApp->GetRenderer(), textBoxColor.r, textBoxColor.g, textBoxColor.b, textBoxColor.a);
+            SDL_RenderFillRect(mApp->GetRenderer(), &textBoxRect);
+            SDL_SetRenderDrawColor(mApp->GetRenderer(), textBoxBorderColor.r, textBoxBorderColor.g, textBoxBorderColor.b, textBoxBorderColor.a);
+            SDL_RenderDrawRect(mApp->GetRenderer(), &textBoxRect);
 
-        // Draw the entered text
-        if (!inputText.empty()) {
-            renderText(inputText, textBoxRect.x + 5, textBoxRect.y + 10, textInsideTextBoxColor);
-        } else {
-            // Optionally, render a placeholder or skip rendering
-            renderText(" ", textBoxRect.x + 5, textBoxRect.y + 10, textInsideTextBoxColor);
+            // Draw the entered text
+            if (!inputText.empty()) {
+                renderText(inputText, textBoxRect.x + 5, textBoxRect.y + 10, textInsideTextBoxColor);
+            } else {
+                // Optionally, render a placeholder or skip rendering
+                renderText(" ", textBoxRect.x + 5, textBoxRect.y + 10, textInsideTextBoxColor);
+            }
+
+            // Draw the Cancel button
+            SDL_SetRenderDrawColor(mApp->GetRenderer(), 200, 0, 0, 255); // Red button
+            SDL_RenderFillRect(mApp->GetRenderer(), &buttonCancelRect);
+            renderText("Cancel", buttonCancelRect.x + 20, buttonCancelRect.y + 5, textColor);
         }
-
 
         // Draw the OK button
         SDL_SetRenderDrawColor(mApp->GetRenderer(), 0, 200, 0, 255); // Green button
         SDL_RenderFillRect(mApp->GetRenderer(), &buttonOKRect);
         renderText("OK", buttonOKRect.x + 35, buttonOKRect.y + 5, textColor);
 
-        // Draw the Cancel button
-        SDL_SetRenderDrawColor(mApp->GetRenderer(), 200, 0, 0, 255); // Red button
-        SDL_RenderFillRect(mApp->GetRenderer(), &buttonCancelRect);
-        renderText("Cancel", buttonCancelRect.x + 20, buttonCancelRect.y + 5, textColor);
-
         // Update the screen
         SDL_RenderPresent(mApp->GetRenderer());
+
+        FrameDelayControl();
+
     }
 
     if (buttonOKClicked) {

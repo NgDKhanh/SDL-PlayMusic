@@ -46,7 +46,7 @@ public:
 
     void addMusicList(const MusicList& musicList);
 
-    void addSongToList(const std::string& path);
+    bool addSongToList(const std::string& path);
 
     void addSongToListManual();
 

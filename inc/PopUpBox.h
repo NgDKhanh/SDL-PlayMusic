@@ -4,6 +4,7 @@
 #include <memory>
 #include "Application.h"
 #include "Text.h"
+#include "FrameControl.h"
 
 class PopUpBox {
 public:
@@ -26,7 +27,7 @@ public:
                 buttonCancelRect = { popupX + popupWidth / 2 + 30, popupY + popupHeight - 40, 100, 30 }; // Centered button
             }
             else if (kind == POP_UP_BOX_KIND::INFO) {
-                buttonOKRect = { popupX + popupWidth / 2 - 20, popupY + popupHeight - 40, 100, 30 }; // Centered button
+                buttonOKRect = { popupX + popupWidth / 2 - 50, popupY + popupHeight - 40, 100, 30 }; // Centered button
             }
         }
 
@@ -35,7 +36,7 @@ public:
     // Function to render text on the screen
     void renderText(const std::string& text, int x, int y, SDL_Color textColor) {
         SDL_Surface* newSurface = TTF_RenderUTF8_Blended(
-            mFont.get(), text.c_str(), {0, 0, 0}
+            mFont.get(), text.c_str(), textColor
         );
         if (newSurface == nullptr) {
             std::cerr << "Failed to load text! SDL_TTF Error: " << TTF_GetError() << std::endl;
@@ -60,6 +61,7 @@ private:
     Application *mApp;
     std::shared_ptr<TTF_Font> mFont { nullptr };
     POP_UP_BOX_KIND mKind;
+
     // Popup box dimensions
     uint16_t popupWidth = 350;
     uint16_t popupHeight = 150;
