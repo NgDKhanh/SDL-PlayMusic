@@ -14,12 +14,13 @@
 #include "MusicController.h"
 #include "Text.h"
 #include "FrameControl.h"
+#include "PopUpBox.h"
 #include <thread>
 #include <chrono>
 
-#define FPS 30
-
 int main() {
+  std::cout << "-------------\tMusic Player\t-------------" << std::endl;
+
   /***************************    LOAD MUSIC     ***********************************/
    //Initialize SDL_mixer
   if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
@@ -39,7 +40,9 @@ int main() {
     return -1;
   }
 
-  SetFPS(static_cast<Uint16>(FPS));
+  SetFPS(static_cast<Uint16>(APP_FPS));
+
+  std::cout << "-------------\tFPS:" << APP_FPS <<  "\t\t-------------" << std::endl;
 
   //Load music
   MusicList musicList;
@@ -87,7 +90,19 @@ int main() {
                     (GameWindow.GetWindowWidth() / 2) - 100, (GameWindow.GetWindowHeight() / 2)};                    
   Button NextTrackButton { &App , "../img/next_track.png" , [&musicPlayer]() { musicPlayer.nextSong(); }, 
                     (GameWindow.GetWindowWidth() / 2) + 100, (GameWindow.GetWindowHeight() / 2)};
-  Button AddMusicButton { &App , "../img/add.png" , [&musicPlayer]() { SDL_CreateThread(MusicManagement::AddSongToListManualWrapper, "AddSongThread", static_cast<void*>(&musicPlayer)); }, 
+  // Button AddMusicButton { &App , "../img/add.png" , [&musicPlayer]() { SDL_CreateThread(MusicManagement::AddSongToListManualWrapper, "AddSongThread", static_cast<void*>(&musicPlayer)); }, 
+  Button AddMusicButton { &App , "../img/add.png" , [&musicPlayer, &App, &GameWindow]() 
+                                                    {
+                                                      PopUpBox AddMusicBox(&App, PopUpBox::POP_UP_BOX_KIND::INPUT,
+                                                                            GameWindow.GetWindowWidth(), GameWindow.GetWindowHeight());
+                                                      std::string path = AddMusicBox.showPopUp("Enter song's path");
+                                                      if (path != "Default" && path != " ") {
+                                                        musicPlayer.addSongToList(path);
+                                                      }
+                                                      else {
+                                                        std::cout << "Cancel";
+                                                      }
+                                                    }, 
                     (GameWindow.GetWindowWidth() / 2) + 100, (GameWindow.GetWindowHeight() / 2) - 60};  
   Button RemoveMusicButton { &App , "../img/minus.png" , [&musicPlayer]() { musicPlayer.removeSongFromList(); }, 
                     (GameWindow.GetWindowWidth() / 2) - 100, (GameWindow.GetWindowHeight() / 2) - 60};
