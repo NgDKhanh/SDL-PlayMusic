@@ -1,7 +1,13 @@
 #include "MusicList.h"
 
-void MusicList::addSong(const std::string& path)
+bool MusicList::addSong(const std::string& path)
 {
+    struct stat sb;
+    if (stat(path.c_str(), &sb))
+    {
+        std::cout << "Path is wrong" << std::endl;
+        return false;
+    }
     Song newSong(path);
     bool firstInitList = false;
 
@@ -17,6 +23,8 @@ void MusicList::addSong(const std::string& path)
     {
         currentPlayingSong = listSong.begin();
     }
+
+    return true;
 }
 
 void MusicList::addMusicMannual()

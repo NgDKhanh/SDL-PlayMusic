@@ -7,14 +7,14 @@ Song::Song(const std::string &path)
 
     if (gMusic == nullptr)
     {
-        std::cout << "Fail to load music from path " << path << "SDL_ERROR: " << Mix_GetError() << std::endl;
+        std::cout << "Fail to load music from path " << path << "\nSDL_ERROR: " << Mix_GetError() << std::endl;
     }
     else
     {
         music = gMusic;
         TagLib::FileRef tempRef{path.c_str()};    
         fileRef = tempRef;
-        std::cout << "Load music from path success!" << std::endl;
+        std::cout << "Load music from path " << path <<  " success!" << std::endl;
     }
 }
 

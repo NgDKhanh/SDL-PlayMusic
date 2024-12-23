@@ -9,7 +9,7 @@
 class MusicController : public Mediator {
 public:
     MusicController(PlayPauseButton *playPauseButton, SongTitle *songTitle, SongTitle *artist, TimeBar *timeBar, MusicManagement *musicManagement) :
-        mPlayPauseButton(playPauseButton), mMusicManagement(musicManagement), mSongTitle(songTitle), mTimeBar(timeBar), mArtist(artist)
+        mPlayPauseButton(playPauseButton), mSongTitle(songTitle), mArtist(artist), mTimeBar(timeBar), mMusicManagement(musicManagement)
     {
         mPlayPauseButton->set_mediator(this);
         mMusicManagement->set_mediator(this);

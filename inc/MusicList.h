@@ -29,7 +29,7 @@ public:
 
   } 
 
-  void addSong(const std::string& path);
+  bool addSong(const std::string& path);
 
   void addMusicMannual();
 

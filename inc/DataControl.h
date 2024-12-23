@@ -21,4 +21,6 @@ public:
     void set_mediator(Mediator *mediator) {
         this->mediator_ = mediator;
     }
+
+    // virtual void handle_notify() = 0;
 };

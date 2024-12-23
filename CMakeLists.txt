@@ -6,9 +6,10 @@ if(NOT CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 17) # Default to C++17
 endif()
 
-set(CMAKE_BUILD_TYPE "Debug")
-# set(CMAKE_CXX_FLAGS "-std=c++14") 
-set(CMAKE_CXX_FLAGS_RELEASE "-O0 -Wall -Wextra -Wpedantic -g")
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build" FORCE)
+endif()
+
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #Setting sources code directory and include directory
@@ -37,11 +38,22 @@ include_directories(
 
 #Add sub-modules
 
+#Add some macros
+set(APP_FPS 30 CACHE STRING "Frames per second for the application")
+set(TEXT_FONT "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf" CACHE STRING "Text font path")
+
 file(GLOB SDL_PROJECT_SOURCES ${SOURCE_DIR}/*.cpp)
 set(EXECUTABLE sdl_playmusic)
 
 #add main executable
 add_executable(${EXECUTABLE} ${SDL_PROJECT_SOURCES} main/main.cpp)
+
+target_compile_definitions(${EXECUTABLE} PRIVATE APP_FPS=${APP_FPS})
+target_compile_options(${EXECUTABLE} PRIVATE
+    $<$<CONFIG:Debug>:-O0 -Wall -Wextra -Wpedantic -g>
+    $<$<CONFIG:Release>:-O2 -Wall -Wextra -Wpedantic>
+)
+
 target_link_libraries(${EXECUTABLE} PUBLIC 
                                             SDL2::Main SDL2::Image 
                                             GL

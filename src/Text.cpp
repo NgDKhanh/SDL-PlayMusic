@@ -14,6 +14,11 @@ void Text::RenderToScreen(SDL_Renderer* renderer) {
 }
 
 void Text::SetText(std::string Content) {
-    mContent = Content;
+    if (Content.size() > 0) {
+        mContent = Content;
+    }
+    else {
+        mContent = "None";
+    }
     changeText = true;
 }
