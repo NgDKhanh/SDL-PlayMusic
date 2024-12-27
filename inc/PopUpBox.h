@@ -33,6 +33,12 @@ public:
 
     std::string showPopUp(std::string message);
 
+    void renderPopUpBox();
+
+    std::string handlePopUpEvent(SDL_Event *event);
+
+    void setMessage(std::string message) { mMessage = message; }
+
     // Function to render text on the screen
     void renderText(const std::string& text, int x, int y, SDL_Color textColor) {
         SDL_Surface* newSurface = TTF_RenderUTF8_Blended(
@@ -61,6 +67,7 @@ private:
     Application *mApp;
     std::shared_ptr<TTF_Font> mFont { nullptr };
     POP_UP_BOX_KIND mKind;
+    std::string mMessage;
 
     // Popup box dimensions
     uint16_t popupWidth = 350;
@@ -80,7 +87,7 @@ private:
     bool buttonOKClicked = false;
     bool buttonCancelClicked = false;
 
-    std::string inputText = ""; // Text entered by the user
+    std::string inputText = "Default"; // Text entered by the user
 
     // Text box dimensions
     SDL_Rect textBoxRect;
