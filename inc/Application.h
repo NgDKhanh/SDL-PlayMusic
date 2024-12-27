@@ -47,8 +47,12 @@ public:
       Object->RenderToScreen(mRenderer.get());
     }
 
+    // SDL_RenderPresent(mRenderer.get());
+  }
+
+  void Invalidate() {
     SDL_RenderPresent(mRenderer.get());
-}
+  }
 
 private:
   Window* mWindow;
